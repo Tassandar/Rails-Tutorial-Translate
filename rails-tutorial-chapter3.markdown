@@ -1,3 +1,6 @@
+翻译 [ruby on rails Tutorial](http://ruby.railstutorial.org/chapters/a-demo-app#top),原作者 [Michael Hartl](http://michaelhartl.com/) .
+
+
 ##第三章 Mostly static pages
 
 在这一章中我们将开始开发一个例子程序，这个程序就是本书中接下来的所使用的例子。
