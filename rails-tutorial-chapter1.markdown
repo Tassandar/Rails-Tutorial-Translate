@@ -1,4 +1,3 @@
-
 开始翻译 [Ruby on Rails Tutorial](http://ruby.railstutorial.org/) 转载请注明出处与原作者 [Michael Hartl](http://ruby.railstutorial.org/) 
 
 欢迎来到跟我实例学 [Ruby on Rails](http://ruby.railstutorial.org/)教程. 这本书的目的是要成为“我如何开始做Ruby on Rails ？”的最佳答案。当你完成这个ror教程之后你将学会与开发部署你自己的网页.
@@ -29,7 +28,7 @@ ruby on rails教程与许多别的rails教程书一样，通过构建许多小�
 
 是什么让rails变得那么的强大？首先，ruby on rails是100%开源的，基于[MIT 认证](http://www.opensource.org/licenses/mit-license.php),对于任何人都是完全免费下载使用的。rails的成功也归功与它优雅而紧密的设计，在其底层的ruby语言同样让人感到惊叹不已。rails为网站开发有效的创建了一个全新的[专属语言（domain-specific language）](http://en.wikipedia.org/wiki/Domain_Specific_Language)。许多常见的网络开发任务，例如生成HTML，使用数据库模型，生成网址路由，对于rails都是轻而易举的。更重要的是，最终的rails应用程序总是简洁而可读性强。
 
-rails同样适用于一个全新的网络框架与技术新手。举例来说，rails是第一个完整的使用digest实现REST网站构架的应用程序（我们很快就会在这篇教材里面学到了。）并且当其他框架拥有了新的功能的时候rails的开发者David Heinemeier Hansson和rails的核心小组绝不会对加入那些诱人的idea有任何的由于。其中最戏剧性的就是rails 和Merb的合并，（merb是另一个ruby网络框架）这样rails就拥有了merb中引入的更强大的模块设计，稳定的api和更佳的特性。
+rails同样适用于一个全新的网络框架与技术新手。举例来说，rails是第一个完整的使用digest实现REST网站构架的应用程序（我们很快就会在这篇教材里面学到了。）并且当其他框架拥有了新的功能的时候rails的开发者David Heinemeier Hansson和rails的核心小组绝不会对加入那些诱人的idea有任何的犹豫。其中最戏剧性的就是rails 和Merb的合并，（merb是另一个ruby网络框架）这样rails就拥有了merb中引入的更强大的模块设计，稳定的api和更佳的特性。
 
 最后，rails也从不同的社区中受益良多，其中包括了成百个开源的作者，热闹的讨论组，大量的插件和gems（包括了对某些特定问题的解决方案例如图片上传和分页设计），丰富多彩的博客和rails论坛和irc频道。大量的rails编程人员也在让解决那些应用程式问题变得更佳简单：“Google the error message”几乎总是能把你带到你最需要的那篇博客或者论坛上去。
 
