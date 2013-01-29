@@ -1,74 +1,32 @@
 
-[Chapter 5 Filling in the layout](filling-in-the-layout#top)
+[第五章 布局](filling-in-the-layout#top)
 ============================================================
 
-In the process of taking a brief tour of Ruby in
-[Chapter 4](rails-flavored-ruby#top), we learned about including the
-application stylesheet into the sample application—but, as noted in
-[Section 4.3.4](rails-flavored-ruby#sec-css_revisited), this stylesheet
-is currently empty. In this chapter, we’ll change this by incorporating
-the *Bootstrap* framework into our application, and then we’ll add some
-custom styles of our own.^[1](#fn-5_1)^ We’ll also start filling in the
-layout with links to the pages (such as Home and About) that we’ve
-created so far ([Section 5.1](filling-in-the-layout#sec-structure)).
-Along the way, we’ll learn about partials, Rails routes, and the asset
-pipeline, including an introduction to Sass
-([Section 5.2](filling-in-the-layout#sec-sass_and_the_asset_pipeline)).
-We’ll also refactor the tests from [Chapter 3](static-pages#top) using
-the latest RSpec techniques. We’ll end by taking a first important step
-toward letting users sign up to our site.
+经过简单的第四章 Ruby 语言的学习之后,我们掌握了在程序中引入布局文件的技巧，但是目前这个布局文件还是空的。在这一章节，我们将要通过使用 *Bootstrap* 框架来对自定义我们的网页布局。我们还要构建出网站中所需要元素和链接，而在这期间，我们将会学会 partial, routes , 和asset pipeline ,同时还会介绍 Sass。
+我们同时还要运用最新的Rspec技术重构第三章的测试.在本章的最后，我们将会实现第一个重要功能：用户注册.
 
-[5.1 Adding some structure](filling-in-the-layout#sec-structure)
+[5.1 布局结构](filling-in-the-layout#sec-structure)
 ----------------------------------------------------------------
 
-The *Rails Tutorial* is a book on web development, not web design, but
-it would be depressing to work on an application that looks like
-*complete* crap, so in this section we’ll add some structure to the
-layout and give it some minimal styling with CSS. In addition to using
-some custom CSS rules, we’ll make use of
-[Bootstrap](http://twitter.github.com/bootstrap/), an open-source web
-design framework from Twitter. We’ll also give our *code* some styling,
-so to speak, using *partials* to tidy up the layout once it gets a
-little cluttered.
+*Rails Tutorial* 是一本关于WEB开发的书，并非WEB设计，但是如果一整个应用程序之中都没有网页的设计将会让我们的成果显得很烂，也会让自己觉得很失败。所以我们在这一章节我们需要用上一点点的CSS技术，为了让我们能更轻松地上手使用CSS进行Web设计开发，我们使用了[Bootstrap](http://twitter.github.com/bootstrap/),一个又Twitter开源的web设计框架我们将会给我们的代码加上一些不同的风格，我们还要用上 partials 来然我们的布局代码显得更加简洁紧凑。
 
-When building web applications, it is often useful to get a high-level
-overview of the user interface as early as possible. Throughout the rest
-of this book, I will thus often include *mockups* (in a web context
-often called *wireframes*), which are rough sketches of what the
-eventual application will look like.^[2](#fn-5_2)^ In this chapter, we
-will principally be developing the static pages introduced in
-[Section 3.1](static-pages#sec-static_pages), including a site logo, a
-navigation header, and a site footer. A mockup for the most important of
-these pages, the Home page, appears in
-[Figure 5.1](filling-in-the-layout#fig-home_page_mockup). You can see
-the final result in
-[Figure 5.7](filling-in-the-layout#fig-site_with_footer). You’ll note
-that it differs in some details—for example, we’ll end up adding a Rails
-logo on the page—but that’s fine, since a mockup need not be exact.
+一般来说，当你开发web应用的时候，如果事先越早从较高的层次上想好自己要写的应用越好。所以在剩下的书中，我们将会使用 *mockups* (和 *wireframes* 差不多，就是网络线框图 ), 的方法对应用进行开发。在这一章，我们主要将开发我们在 3.1 中说过的静态页面，包括网站logo，导航栏，和网站的页脚。于是我们事先已经对我们的作品作出一个 mockup 设计：
+[Figure 5.1](filling-in-the-layout#fig-home_page_mockup).你可以在这里看到最终结果[Figure 5.7](filling-in-the-layout#fig-site_with_footer).你或许会发现他们之间有着一些细节的差别--例如我们在最后加上了Rails的logo，但是没关系，Mockup 不需要太精确。
+
 
 ![home\_page\_mockup\_bootstrap](/images/figures/home_page_mockup_bootstrap.png)
 
 Figure 5.1: A mockup of the sample application’s Home page. [(full
 size)](http://railstutorial.org/images/figures/home_page_mockup_bootstrap-full.png)
 
-As usual, if you’re using Git for version control, now would be a good
-time to make a new branch:
+和平常一样，如果你使用了Git作为版本管理工具那么现在是时候开始再建立一个新的分支了：
 
     $ git checkout -b filling-in-layout
 
 ### [5.1.1 Site navigation](filling-in-the-layout#sec-adding_to_the_layout)
 
-As a first step toward adding links and styles to the sample
-application, we’ll update the site layout file `application.html.erb`
-(last seen in
-[Listing 4.3](rails-flavored-ruby#code-application_layout_full_title))
-with additional HTML structure. This includes some additional divisions,
-some CSS classes, and the start of our site navigation. The full file is
-in [Listing 5.1](filling-in-the-layout#code-layout_new_structure);
-explanations for the various pieces follow immediately thereafter. If
-you’d rather not delay gratification, you can see the results in
-[Figure 5.2](filling-in-the-layout#fig-layout_no_logo_or_custom_css).
-(*Note:* it’s not (yet) very gratifying.)
+和我们在示例应用中做过的一样，我们先要更改网站的模板文件 `application.html.erb`，其中包含了你的 HTML 文件的大体框架。还有你的CSS和JS文件。全文如下：
+
 
 Listing 5.1. The site layout with added structure. \
 `app/views/layouts/application.html.erb`
@@ -104,50 +62,33 @@ Listing 5.1. The site layout with added structure. \
         </div>
       </body>
     </html>
+    
 
-One thing to note immediately is the switch from Ruby 1.8–style hashes
-to the new Ruby 1.9 style
-([Section 4.3.3](rails-flavored-ruby#sec-hashes_and_symbols)). That is,
+这里要注意，我们用的哈希是Ruby-1.9的形式。
+
+例如在这里：
 
     <%= stylesheet_link_tag "application", :media => "all" %>
 
-has been replaced with
+被替换成了：
 
     <%= stylesheet_link_tag "application", media: "all" %>
 
-Because the old hash syntax is still common, especially in older
-applications, it’s important to be able to recognize both forms.
+因为旧的哈希形式在Ruby on Rails 社区之中依然十分流行，所以认得这两种形式的哈希写法还是必须的。
 
-Let’s look at the other new elements in
-[Listing 5.1](filling-in-the-layout#code-layout_new_structure) from top
-to bottom. As noted briefly in
-[Section 3.1](static-pages#sec-static_pages), Rails 3 uses HTML5 by
-default (as indicated by the doctype `<!DOCTYPE html>`); since the HTML5
-standard is relatively new, some browsers (especially older versions
-Internet Explorer) don’t fully support it, so we include some JavaScript
-code (known as an “[HTML5 shim](http://code.google.com/p/html5shim/)”)
-to work around the issue:
+现在我们再来看看文件中的其他元素。Rails 3 默认使用了HTML5 （文档开头需要标注 `<!DOCTYPE html>`）；然而 HTML5 标准相对较新，有的浏览器并未全面支持（例如IE），因此我们加入一些 JavaScript 代码来作为解决方案：
 
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-The somewhat odd syntax
+在这里用上了一个奇怪的语句：
 
     <!--[if lt IE 9]>
 
-includes the enclosed line only if the version of Microsoft Internet
-Explorer (IE) is less than 9 (`if lt IE 9`). The weird `[if lt IE 9]`
-syntax is *not* part of Rails; it’s actually a [conditional
-comment](http://en.wikipedia.org/wiki/Conditional_comment) supported by
-Internet Explorer browsers for just this sort of situation. It’s a good
-thing, too, because it means we can include the HTML5 shim *only* for IE
-browsers less than version 9, leaving other browsers such as Firefox,
-Chrome, and Safari unaffected.
+该语句表明在关闭符号线以内的语句将在浏览器 Microsoft Internet Explorer (IE) 低于 9 (`if lt IE 9`)的时候执行。其中怪怪的语句  `[if lt IE 9]` 并不是 Rails 的一部分，它是IE浏览器支持的语法，具体看这里[conditional comment](http://en.wikipedia.org/wiki/Conditional_comment) 。这样一来，就保证了我们只会在IE浏览器的版本低于9的时候加载我们需要的脚本文件。
 
-The next section includes a `header` for the site’s (plain-text) logo, a
-couple of divisions (using the `div` tag), and a list of elements with
-navigation links:
+下一部分是网站的头部，包含了 logo ，还有一些用来封装内容的 div 标签，还有一个 list 元素作为导航链接页面。
 
     <header class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
@@ -164,35 +105,22 @@ navigation links:
       </div>
     </header>
 
-Here the `header` tag indicates elements that should go at the top of
-the page. We’ve given the `header` tag three *CSS
-classes*,^[3](#fn-5_3)^ called `navbar`, `navbar-fixed-top`, and
-`navbar-inverse`, separated by spaces:
+这里的 `header` 标签指出了标签内部的元素应该位于页面的顶端。我们在  `header` 标签上标明了三个 CSS Class 分别为  `navbar`, `navbar-fixed-top`, and
+`navbar-inverse` ，
 
     <header class="navbar navbar-fixed-top navbar-inverse">
 
-All HTML elements can be assigned both classes and *ids*; these are
-merely labels, and are useful for styling with CSS
-([Section 5.1.2](filling-in-the-layout#sec-custom_css)). The main
-difference between classes and ids is that classes can be used multiple
-times on a page, but ids can be used only once. In the present case, all
-the navbar classes have special meaning to the Bootstrap framework,
-which we’ll install and use in
-[Section 5.1.2](filling-in-the-layout#sec-custom_css).
+所有的HTML元素都可以分配一个 id 或者多个 class，这在CSS布局中是极为常用的技巧。这三个类名是实现封装在Bootstrap前端框架中的，我们将实现在[Section 5.1.2](filling-in-the-layout#sec-custom_css)中.
 
-Inside the `header` tag, we see a couple of `div` tags:
+在 `header` 标签中，我们看到两个 div 标签：
 
     <div class="navbar-inner">
       <div class="container">
 
-The `div` tag is a generic division; it doesn’t do anything apart from
-divide the document into distinct parts. In older-style HTML, `div` tags
-are used for nearly all site divisions, but HTML5 adds the `header`,
-`nav`, and `section` elements for divisions common to many applications.
-In this case, each `div` has a CSS class as well. As with the `header`
-tag’s classes, these classes have special meaning to Bootstrap.
+div 标签就是一个常见的分割符，它对于文档不做任何事实上的分割作用。在HTML5出现之前，几乎所有的网站的布局分割都需要div标签，现在，我们可以运用HTML5技术加入 `header`,
+`nav`, 和 `section` 元素用来更为明确地对网页文档进行分割布局。在这里，我们也为了每一个div加上了class属性，这里每一个class属性都在Bootstrap中有着特殊的意义。
 
-After the divs, we encounter some embedded Ruby:
+看完了div，接着就是数行内嵌的Ruby代码：
 
     <%= link_to "sample app", '#', id: "logo" %>
     <nav>
@@ -203,22 +131,9 @@ After the divs, we encounter some embedded Ruby:
       </ul>
     </nav>
 
-This uses the Rails helper `link_to` to create links (which we created
-directly with the anchor tag `a` in
-[Section 3.3.2](static-pages#sec-passing_title_tests)); the first
-argument to `link_to` is the link text, while the second is the URI.
-We’ll fill in the URIs with *named routes* in
-[Section 5.3.3](filling-in-the-layout#sec-named_routes), but for now we
-use the stub URI `’#’` commonly used in web design. The third argument
-is an options hash, in this case adding the CSS id `logo` to the sample
-app link. (The other three links have no options hash, which is fine
-since it’s optional.) Rails helpers often take options hashes in this
-way, giving us the flexibility to add arbitrary HTML options without
-ever leaving Rails.
+这里使用了 Rails helper  `link_to`  来创建链接(我们曾经使用 `a` 元素来创建链接).`link_to`的第一个参数是链接的文本，而第二个是URI。我们暂时在链接的目标URI都先填上了固定链接 ‘#’ ，这在网页设计中十分常见。第三个参数，我们填上了一个id为logo的哈希。Rails helper 用这样的方式来给用户提供更加便捷的HTML选项。
 
-The second element inside the divs is a list of navigation links, made
-using the *unordered list* tag `ul`, together with the *list item* tag
-`li`:
+第二个div包含的元素是一个导航链接产生的list，通过 “无顺序清单” `ul` 标签和 `list` 标签 `li` 的运用即可达到效果：
 
     <nav>
       <ul class="nav pull-right">
@@ -228,10 +143,7 @@ using the *unordered list* tag `ul`, together with the *list item* tag
       </ul>
     </nav>
 
-The `nav` tag, though formally unnecessary here, communicates the
-purpose of the navigation links. The `nav` and `pull-right` classes on
-the `ul` tag have special meaning to Bootstrap. Once Rails has processed
-this layout and evaluated the embedded Ruby, the list looks like this:
+在这里，虽然 `nav` 标签好似优点多余，但是表明了块内的代码作用，并且在这里，`nav` 和 `pull-right` class 在 `Bootstrap` 中存在特殊含义。当经过Rails处理了内嵌的Ruby代码之后，这样的列表就会变成这样:
 
     <nav>
       <ul class="nav pull-right">
@@ -241,22 +153,13 @@ this layout and evaluated the embedded Ruby, the list looks like this:
       </ul>
     </nav>
 
-The final part of the layout is a `div` for the main content:
+在整个布局文件的末尾才是主要内容的 `div`。
 
     <div class="container">
       <%= yield %>
     </div>
 
-As before, the `container` class has special meaning to Bootstrap. As we
-learned in [Section 3.3.4](static-pages#sec-layouts), the `yield` method
-inserts the contents of each page into the site layout.
-
-Apart from the site footer, which we’ll add in
-[Section 5.1.3](filling-in-the-layout#sec-partials), our layout is now
-complete, and we can look at the results by visiting the Home page. To
-take advantage of the upcoming style elements, we’ll add some extra
-elements to the `home.html.erb` view
-([Listing 5.2](filling-in-the-layout#code-signup_button)).
+同样，`container` 也在Bootstrap中有着特殊意义。我们曾经在 3.3.4 中学过了 `yield` 方法可以将内容页插入布局页。页脚我们将会在 5.1.3 中加入，我们的布局页面暂时已经完成，我们已经可以通过访问首页来对其进行访问了。要想用上这个布局文件，我们还需要在 `home.html.erb` 页面之中插入一些元素：
 
 Listing 5.2. The Home page with a link to the signup page. \
 `app/views/static_pages/home.html.erb`
@@ -275,43 +178,22 @@ Listing 5.2. The Home page with a link to the signup page. \
 
     <%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
 
-In preparation for adding users to our site in [Chapter 7](sign-up#top),
-the first `link_to` creates a stub link of the form
+我们在这里就为第七章的用户系统做好准备，第一个 `link_to` 建立了一个固定链接。
 
     <a href="#" class="btn btn-large btn-primary">Sign up now!</a>
 
-In the `div` tag, the `hero-unit` CSS class has a special meaning to
-Bootstrap, as do the `btn`, `btn-large`, and `btn-primary` classes in
-the signup button.
+在这里，div标签中的 `hero-unit` 在Bootstrap中有着特殊意义的，同理对于注册按钮中的 `btn`, `btn-large`, 和 `btn-primary` 类名。
 
-The second `link_to` shows off the `image_tag` helper, which takes as
-arguments the path to an image and an optional options hash, in this
-case setting the `alt` attribute of the image tag using symbols. To make
-this clearer, let’s look at the HTML this tag produces:^[4](#fn-5_4)^
+第二个  `link_to` 中见加上了 `image_tag` helper函数，它接受的参数为图片的路径和一个可选的哈希，在这里，我们把图片链接的  `alt`  属性通过符号进行了设置，它能产生出这样的HTML代码：
 
     <img alt="Rails" src="/assets/rails.png" />
 
-The `alt` attribute is what will be displayed if there is no image, and
-it is also what will be displayed by screen readers for the visually
-impaired. Although people are sometimes sloppy about including the `alt`
-attribute for images, it is in fact required by the HTML standard.
-Luckily, Rails includes a default `alt` attribute; if you don’t specify
-the attribute in the call to `image_tag`, Rails just uses the image
-filename (minus extension). In this case, though, we’ve set the `alt`
-text explicitly in order to capitalize “Rails”.
+ `alt` 属性的值将会当在图片不存在的时候显示，它是一种当图片无法显示时对读者补偿机制。由于人们常常漏过图片的 alt 属性，Rails 在你使用了 image_tag 函数的时候默认把图片的文件名作为其 alt 属性。在这个例子里，我们把 alt 文字值指定为 “Rails”。
 
-Now we’re finally ready to see the fruits of our labors
-([Figure 5.2](filling-in-the-layout#fig-layout_no_logo_or_custom_css)).
-Pretty underwhelming, you say? Perhaps so. Happily, though, we’ve done a
-good job of giving our HTML elements sensible classes, which puts us in
-a great position to add style to the site with CSS.
+现在，我们终于可以看到我们辛苦劳动的果实。很酷，不是么？([Figure 5.2](filling-in-the-layout#fig-layout_no_logo_or_custom_css)).
 
-By the way, you might be surprised to discover that the `rails.png`
-image actually exists. Where did it come from? It’s included for free
-with every new Rails application, and you will find it in
-`app/assets/images/rails.png`. Because we used the `image_tag` helper,
-Rails finds it automatically using the asset pipeline
-([Section 5.2](filling-in-the-layout#sec-sass_and_the_asset_pipeline)).
+另外，你可能会很惊讶地发现首页上 `rails.png` 竟然确实存在。它在哪里？事实上，每一个新建的Rails应用都可以在 `app/assets/images/rails.png` 找到一张Rails的标志。因为我们实用了 `image_tag` Helper , Rails 将会通过 asset pipeline 技术自动链接到正确地地址([Section 5.2](filling-in-the-layout#sec-sass_and_the_asset_pipeline)).
+
 
 ![layout\_no\_logo\_or\_custom\_css\_bootstrap](/images/figures/layout_no_logo_or_custom_css_bootstrap.png)
 
@@ -320,28 +202,13 @@ Figure 5.2: The Home page
 custom CSS. [(full
 size)](http://railstutorial.org/images/figures/layout_no_logo_or_custom_css_bootstrap-full.png)
 
-### [5.1.2 Bootstrap and custom CSS](filling-in-the-layout#sec-custom_css)
 
-In [Section 5.1.1](filling-in-the-layout#sec-adding_to_the_layout), we
-associated many of the HTML elements with CSS classes, which gives us
-considerable flexibility in constructing a layout based on CSS. As noted
-in [Section 5.1.1](filling-in-the-layout#sec-adding_to_the_layout), many
-of these classes are specific to
-[Bootstrap](http://twitter.github.com/bootstrap/), a framework from
-Twitter that makes it easy to add nice web design and user interface
-elements to an HTML5 application. In this section, we’ll combine
-Bootstrap with some custom CSS rules to start adding some style to the
-sample application.
+### [5.1.2 Bootstrap 自定义 CSS](filling-in-the-layout#sec-custom_css)
 
-Our first step is to add Bootstrap, which in Rails applications can be
-accomplished with the `bootstrap-sass` gem, as shown in
-[Listing 5.3](filling-in-the-layout#code-bootstrap_sass). The Bootstrap
-framework natively uses the [LESS CSS](http://lesscss.org/) language for
-making dynamic stylesheets, but the Rails asset pipeline supports the
-(very similar) Sass language by default
-([Section 5.2](filling-in-the-layout#sec-sass_and_the_asset_pipeline)),
-so `bootstrap-sass` converts LESS to Sass and makes all the necessary
-Bootstrap files available to the current application.^[5](#fn-5_5)^
+在 [Section 5.1.1](filling-in-the-layout#sec-adding_to_the_layout)中，我们将许多HTML元素设置了class，它让我们便捷地产生许多CSS效果。事实上，其中绝大多数的效果来自于[Bootstrap](http://twitter.github.com/bootstrap/),一个来自Twitter的网页框架，它使我们能够更加便捷地添加交互与设计网页。在这一章里，我们将会把 Bootstrap 和一些自定义CSS规则结合起来，制作自己的网站应用。
+
+我们首先要添加 Bootstrap,它在 Rails 应用中已经被编译成了  `bootstrap-sass` 我们可以在这里看到[Listing 5.3](filling-in-the-layout#code-bootstrap_sass).Bootstrap 框架最初实用的是 [LESS CSS](http://lesscss.org/) 语言，它是一种构建动态样式表的语言。然而，Rails 的 asset pipeline 支持的是另一种(很类似)的语言 Sass，([Section 5.2](filling-in-the-layout#sec-sass_and_the_asset_pipeline))。所以我们添加的是 `bootstrap-sass` 的gem ，它已经Bootstrap从LESS语言转换为SASS语言，让他能够被应用正常实用。
+
 
 Listing 5.3. Adding the `bootstrap-sass` gem to the `Gemfile`.
 
@@ -353,68 +220,42 @@ Listing 5.3. Adding the `bootstrap-sass` gem to the `Gemfile`.
     .
     .
 
-To install Bootstrap, we run `bundle install` as usual:
+
+接下来我们运行`bundle install` 安装 Bootstrap：    
+
 
     $ bundle install
 
-Then restart the web server to incorporate the changes into the
-development application. (On most systems, restarting the server will
-involve pressing `Ctrl-C` and then running `rails server`.)
 
-The first step in adding custom CSS to our application is to create a
-file to contain it:
+之后我们要重启网页服务器，一次来保证新加入的插件正常工作。(在大部分系统上，重启服务器只需要按 `Ctrl-C` 之后重新运行`rails server`. )
+
+要加入自定义CSS到应用程序中就是要创建一个文件包含：
+
 
     app/assets/stylesheets/custom.css.scss
 
-(Use your text editor or IDE to create the new file.) Here both the
-directory name and filename are important. The directory
+在这里，目录和文件的名字都被加上了。目录：
 
     app/assets/stylesheets
 
-is part of the asset pipeline
-([Section 5.2](filling-in-the-layout#sec-sass_and_the_asset_pipeline)),
-and any stylesheets in this directory will automatically be included as
-part of the `application.css` file included in the site layout.
-Furthermore, the filename `custom.css.scss` includes the `.css`
-extension, which indicates a CSS file, and the `.scss` extension, which
-indicates a “Sassy CSS” file and arranges for the asset pipeline to
-process the file using Sass. (We won’t be using Sass until
-[Section 5.2.2](filling-in-the-layout#sec-sass), but it’s needed now for
-the `bootstrap-sass` gem to work its magic.)
+是 asset pipeline的一部分，而在该目录下的任何一部分都会被包含在文件  `application.css` 中作为网站的布局。另外，文件 `custom.css.scss` 的名字中包含 `.css` 后缀，说明了它是一个 CSS 文件，而 `.scss` 后缀，说明了它是 “Sassy CSS” 文件以便 asset pipeline 实用 Sass 处理该文件。
 
-After creating the file for custom CSS, we can use the `@import`
-function to include Bootstrap, as shown in
-[Listing 5.4](filling-in-the-layout#code-bootstrap_css).
+建立了自定义CSS文件之后，我们可以使用 `@import` 函数来加入 Bootstrap 如下：
 
 Listing 5.4. Adding Bootstrap CSS. \
 `app/assets/stylesheets/custom.css.scss`
 
     @import "bootstrap";
 
-This one line includes the entire Bootstrap CSS framework, with the
-result shown in in
-[Figure 5.3](filling-in-the-layout#fig-sample_app_only_bootstrap). (You
-may have to use `Ctrl-C` restart the local web server. It’s also worth
-noting that the screenshots use Bootstrap 2.0, whereas the tutorial
-currently uses Bootstrap 2.1, so there may be minor differences in
-appearance. These are not cause for concern.) The placement of the text
-isn’t good and the logo doesn’t have any style, but the colors and
-signup button look promising.
+折一行，包含了整个Bootstrap 的 CSS 框架，结果如下：
 
 ![sample\_app\_only\_bootstrap](/images/figures/sample_app_only_bootstrap.png)
 
 Figure 5.3: The sample application with Bootstrap CSS. [(full
 size)](http://railstutorial.org/images/figures/sample_app_only_bootstrap-full.png)
 
-Next we’ll add some CSS that will be used site-wide for styling the
-layout and each individual page, as shown in
-[Listing 5.5](filling-in-the-layout#code-universal_css). There are quite
-a few rules in [Listing 5.5](filling-in-the-layout#code-universal_css);
-to get a sense of what a CSS rule does, it’s often helpful to comment it
-out using CSS comments, i.e., by putting it inside `/* … */`, and seeing
-what changes. The result of the CSS in
-[Listing 5.5](filling-in-the-layout#code-universal_css) is shown in
-[Figure 5.4](filling-in-the-layout#fig-sample_app_universal).
+然后我们将要添加一些全站共用的CSS代码到布局文件中去。为了让自己写的代码更加清晰易懂，我们常常实用CSS注释，即在 `/* … */` 中加入注释文字。
+
 
 Listing 5.5. Adding CSS for some universal styling applying to all
 pages. \
@@ -453,43 +294,24 @@ pages. \
 Figure 5.4: Adding some spacing and other universal styling. [(full
 size)](http://railstutorial.org/images/figures/sample_app_universal-full.png)
 
-Note that the CSS in
-[Listing 5.5](filling-in-the-layout#code-universal_css) has a consistent
-form. In general, CSS rules refer either to a class, an id, an HTML tag,
-or some combination thereof, followed by a list of styling commands. For
-example,
-
-    body {
+注意[Listing 5.5](filling-in-the-layout#code-universal_css) 中展示了一个相对固定的格式。通常来说，CSS 规则由一个class 或 id 或 html tag 或多种的组合，接着一行或者数行的样式命令，例如：
+ 
+  body {
       padding-top: 60px;
     }
 
-puts 60 pixels of padding at the top of the page. Because of the
-`navbar-fixed-top` class in the `header` tag, Bootstrap fixes the
-navigation bar to the top of the page, so the padding serves to separate
-the main text from the navigation. (Because the default navbar color
-changed between Boostrap 2.0 and 2.1, we need the `navbar-inverse` class
-to make it dark instead of light.) Meanwhile, the CSS in the rule
+它将设置60像素的顶部间隔长。因为 `navbar-fixed-top` 类处于  `header` tag之中，Bootstrap 将导航栏置于页面顶端，为了和正文保持距离，所以设置了正文的顶端间隔。
+
+此外，CSS中的这条规则
 
     .center {
       text-align: center;
     }
 
-associates the `center` class with the `text-align: center` property. In
-other words, the dot `.` in `.center` indicates that the rule styles a
-class. (As we’ll see in
-[Listing 5.7](filling-in-the-layout#code-logo_css), the pound sign `#`
-identifies a rule to style a CSS *id*.) This means that elements inside
-any tag (such as a `div`) with class `center` will be centered on the
-page. (We saw an example of this class in
-[Listing 5.2](filling-in-the-layout#code-signup_button).)
+同理，在这里 把 `center` 类绑定了 `text-align: center` 属性。在这里，`.center` 中的 `.`  表示匹配的是类对象(而井号 `#` 表示匹配的是 id )。这条意味着包含了`center` 类的元素将会被在置于页面的中央。 
 
-Although Bootstrap comes with CSS rules for nice typography, we’ll also
-add some custom rules for the appearance of the text on our site, as
-shown in [Listing 5.6](filling-in-the-layout#code-typography_css). (Not
-all of these rules apply to the Home page, but each rule here will be
-used at some point in the sample application.) The result of
-[Listing 5.6](filling-in-the-layout#code-typography_css) is shown in
-[Figure 5.5](filling-in-the-layout#fig-sample_app_typography).
+虽然通过 Bootsrtap 的 CSS 规则能够获得很漂亮的排版，但是我们还是要加入一些自定义规则来运用在网站和页面的布局上。
+
 
 Listing 5.6. Adding CSS for nice typography. \
 `app/assets/stylesheets/custom.css.scss`
@@ -531,12 +353,8 @@ Listing 5.6. Adding CSS for nice typography. \
 Figure 5.5: Adding some typographic styling. [(full
 size)](http://railstutorial.org/images/figures/sample_app_typography-full.png)
 
-Finally, we’ll add some rules to style the site’s logo, which simply
-consists of the text “sample app”. The CSS in
-[Listing 5.7](filling-in-the-layout#code-logo_css) converts the text to
-uppercase and modifies its size, color, and placement. (We’ve used a
-CSS id because we expect the site logo to appear on the page only once,
-but you could use a class instead.)
+
+最后，我们为网站的 LOGO 添加几条CSS规则，还要为我们的文字 “sample app”，设置大写，颜色，位置。x
 
 Listing 5.7. Adding CSS for the site logo. \
 `app/assets/stylesheets/custom.css.scss`
@@ -565,15 +383,7 @@ Listing 5.7. Adding CSS for the site logo. \
       text-decoration: none;
     }
 
-Here `color: #fff` changes the color of the logo to white. HTML colors
-can be coded with three pairs of base-16 (hexadecimal) numbers, one each
-for the primary colors red, green, and blue (in that order). The code
-`#ffffff` maxes out all three colors, yielding pure white, and `#fff` is
-a shorthand for the full `#ffffff`. The CSS standard also defines a
-large number of synonyms for common [HTML
-colors](http://www.w3schools.com/html/html_colornames.asp), including
-`white` for `#fff`. The result of the CSS in
-[Listing 5.7](filling-in-the-layout#code-logo_css) is shown in
+这里的  `color: #fff` 将 logo 的颜色改成白色。HTML 颜色可以用三对十六进制数表示，分别表示红，绿，蓝三色。代码 `#ffffff` 是 `#fff` 的完整形式，他们都表示纯白色。CSS 标准也允许使用很多特定名字来作为属性，[HTML colors](http://www.w3schools.com/html/html_colornames.asp),例如这里可以使用 `white` 来代替 `#fff`。代码产生的结果如下：[Listing 5.7](filling-in-the-layout#code-logo_css) 
 [Figure 5.6](filling-in-the-layout#fig-sample_app_logo).
 
 ![sample\_app\_logo](/images/figures/sample_app_logo.png)
@@ -581,17 +391,11 @@ colors](http://www.w3schools.com/html/html_colornames.asp), including
 Figure 5.6: The sample app with nicely styled logo. [(full
 size)](http://railstutorial.org/images/figures/sample_app_logo-full.png)
 
+
 ### [5.1.3 Partials](filling-in-the-layout#sec-partials)
 
-Although the layout in
-[Listing 5.1](filling-in-the-layout#code-layout_new_structure) serves
-its purpose, it’s getting a little cluttered. The HTML shim takes up
-three lines and uses weird IE-specific syntax, so it would be nice to
-tuck it away somewhere on its own. In addition, the header HTML forms a
-logical unit, so it should all be packaged up in one place. The way to
-achieve this in Rails is to use a facility called *partials*. Let’s
-first take a look at what the layout looks like after the partials are
-defined
+虽然我们已经在5.1之中完成了所有布局文件的内容，但是它看起来还是有一点 cluttered .  HTML 的注释和分割代码的功能非常薄弱，整个页面的代码都必须放在一个文件里。Rails想出了一个方法来解决这个问题，叫做 *partials*. 让我们先看看经过 partials 处理之后的布局文件。
+
 ([Listing 5.8](filling-in-the-layout#code-layout_with_partials)).
 
 Listing 5.8. The site layout with partials for the stylesheets and
@@ -615,27 +419,14 @@ header. \
       </body>
     </html>
 
-In [Listing 5.8](filling-in-the-layout#code-layout_with_partials), we’ve
-replaced the HTML shim stylesheet lines with a single call to a Rails
-helper called `render`:
+我们注意到了，我们把烦人的 HTML 标注部分给换成了一个 Rails 的helper 叫 `render`: 
 
     <%= render 'layouts/shim' %>
 
-The effect of this line is to look for a file called
-`app/views/layouts/_shim.html.erb`, evaluate its contents, and insert
-the results into the view.^[6](#fn-5_6)^ (Recall that
-`<%= ... %>`{.verb} is the embedded Ruby syntax needed to evaluate a
-Ruby expression and then insert the results into the template.) Note the
-leading underscore on the filename `_shim.html.erb`; this underscore is
-the universal convention for naming partials, and among other things
-makes it possible to identify all the partials in a directory at a
-glance.
+这句话的效果是去寻找一个文件叫做 `app/views/layouts/_shim.html.erb` ，处理文件中的内容之后吧结果插入到当前的视图文件之中。注意这里的文件名，文件名之前有一个下划线  `_shim.html.erb`; 这个下划线使我们的 partial 文件和普通的视图文件区别开来，使我们能轻易地分辨他们。
 
-Of course, to get the partial to work, we have to fill it with some
-content; in the case of the shim partial, this is just the three lines
-of shim code from
-[Listing 5.1](filling-in-the-layout#code-layout_new_structure); the
-result appears in
+当然为了让 partial 运作起来，我们需要向其中加上一下内容，在这个 shim partial 中，我们只需要简单的三行代码就足够了。
+
 [Listing 5.9](filling-in-the-layout#code-stylesheets_partial).
 
 Listing 5.9. A partial for the HTML shim. \
@@ -645,9 +436,7 @@ Listing 5.9. A partial for the HTML shim. \
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-Similarly, we can move the header material into the partial shown in
-[Listing 5.10](filling-in-the-layout#code-header_partial) and insert it
-into the layout with another call to `render`.
+类似地，我们可以把头部内容抽取出来放到另一个partial中，然后再加入一行 render 来调用。
 
 Listing 5.10. A partial for the site header. \
 `app/views/layouts/_header.html.erb`
@@ -667,10 +456,9 @@ Listing 5.10. A partial for the site header. \
       </div>
     </header>
 
-Now that we know how to make partials, let’s add a site footer to go
-along with the header. By now you can probably guess that we’ll call it
-`_footer.html.erb` and put it in the layouts directory
-([Listing 5.11](filling-in-the-layout#code-footer_partial)).^[7](#fn-5_7)^
+现在我们知道了 partial 是怎么回事，我们来加入一个网站的 footer 部分吧。首先我们要在layouts目录下新建一个文件叫 `_footer.html.erb`。
+
+([Listing 5.11](filling-in-the-layout#code-footer_partial)).
 
 Listing 5.11. A partial for the site footer. \
 `app/views/layouts/_footer.html.erb`
@@ -689,12 +477,8 @@ Listing 5.11. A partial for the site footer. \
       </nav>
     </footer>
 
-As with the header, in the footer we’ve used `link_to` for the internal
-links to the About and Contact pages and stubbed out the URIs with `’#’`
-for now. (As with `header`, the `footer` tag is new in HTML5.)
+和刚刚处理header的方式一样，在footer中我们使用了 `link_to` 函数来链接 About 和 Content 页面，并暂时先用 `'#'` 来代替目标地址，然后用同样的方法调用 render。 
 
-We can render the footer partial in the layout by following the same
-pattern as the stylesheets and header partials
 ([Listing 5.12](filling-in-the-layout#code-layout_with_footer)).
 
 Listing 5.12. The site layout with a footer partial. \
@@ -718,9 +502,7 @@ Listing 5.12. The site layout with a footer partial. \
       </body>
     </html>
 
-Of course, the footer will be ugly without some styling
-([Listing 5.13](filling-in-the-layout#code-footer_css)). The results
-appear in [Figure 5.7](filling-in-the-layout#fig-site_with_footer).
+footer 这时候还没有样式表支持，十分地丑陋。我们现在来给它润润色。
 
 Listing 5.13. Adding the CSS for the site footer. \
 `app/assets/stylesheets/custom.css.scss`
@@ -763,66 +545,46 @@ Listing 5.13. Adding the CSS for the site footer. \
 ![site\_with\_footer\_bootstrap](/images/figures/site_with_footer_bootstrap.png)
 
 Figure 5.7: The Home page
-([/static\_pages/home](http://localhost:3000/static_pages/home)) with an
-added footer. [(full
+([/static\_pages/home](http://localhost:3000/static_pages/home)) 加上footer. [(full
 size)](http://railstutorial.org/images/figures/site_with_footer_bootstrap-full.png)
 
-[5.2 Sass and the asset pipeline](filling-in-the-layout#sec-sass_and_the_asset_pipeline)
+[5.2 Sass 和 Asset pipeline](filling-in-the-layout#sec-sass_and_the_asset_pipeline)
 ----------------------------------------------------------------------------------------
 
-One of the most notable differences between Rails 3.0 and more recent
-versions is the asset pipeline, which significantly improves the
-production and management of static assets such as CSS, JavaScript, and
-images. This section gives a high-level overview of the asset pipeline
-and then shows how to use a remarkable tool for making CSS called
-*Sass*, now included by default as part of the asset pipeline.
 
-### [5.2.1 The asset pipeline](filling-in-the-layout#sec-the_asset_pipeline)
+Rails 3.0 和 当前版本的Rails 最引人关注的区别就是新版加入了 asset pipeline，显著地提升了管理例如 CSS  Javascript ，图片等静态资源的能力。在这一部分我们会大致地介绍 asset pipeline和其默认使用的 SASS 这个神奇的 CSS 工具。
 
-The asset pipeline involves lots of changes under Rails’ hood, but from
-the perspective of a typical Rails developer there are three principal
-features to understand: asset directories, manifest files, and
-preprocessor engines.^[8](#fn-5_8)^ Let’s consider each in turn.
+### [5.2.1 Asset Pipeline](filling-in-the-layout#sec-the_asset_pipeline)
 
-#### [Asset directories](filling-in-the-layout#sec-5_2_1_1)
+Asset Pipeline 的出现让Rails的内部结构改变了很多，但是从一个Rails开发人员的角度上来说，主要是有三个新增特性： asset 目录，文件清单，和预处理引擎。我们会依次介绍。
 
-In versions of Rails before 3.0 (including 3.0 itself), static assets
-lived in the `public/` directory, as follows:
+#### [Asset 目录](filling-in-the-layout#sec-5_2_1_1)
+
+在Rails 3.0 之前( 包括 3.0 )，静态资源都放在  `public/` 目录之下，包括了
 
 -   `public/stylesheets`
 -   `public/javascripts`
 -   `public/images`
 
-Files in these directories are (even post-3.0) automatically served up
-via requests to http://example.com/stylesheets, etc.
+该目录下的资源将能够被例如 http://example.com/stylesheets  的路径访问到。
 
-Starting in Rails 3.1, there are *three* canonical directories for
-static assets, each with its own purpose:
+而从 Rails 3.1 开始，将有三个目录来放置静态资源，但是他们又有一些分别：
 
--   `app/assets`: assets specific to the present application
--   `lib/assets`: assets for libraries written by your dev team
--   `vendor/assets`: assets from third-party vendors
+-   `app/assets`: 应用程序所需静态资源 
+-   `lib/assets`: 为你自己程序所写的程序库静态资源
+-   `vendor/assets`: 第三方插件的静态资源 
 
-As you might guess, each of these directories has a subdirectory for
-each asset class, e.g.,
+你可能可以猜到，每个的目录下面都有三个资源类目录：
 
     $ ls app/assets/
     images      javascripts stylesheets
 
-At this point, we’re in a position to understand the motivation behind
-the location of the `custom.css.scss` file in
-[Section 5.1.2](filling-in-the-layout#sec-custom_css): `custom.css.scss`
-is specific to the sample application, so it goes in
-`app/assets/stylesheets`.
+这是我们就理解了为什么当时我们要把 `custom.css.scss` 放置在`app/assets/stylesheets` 的原因了吧。
 
-#### [Manifest files](filling-in-the-layout#sec-5_2_1_2)
+#### [清单文件与管理静态资源](filling-in-the-layout#sec-5_2_1_2)
 
-Once you’ve placed your assets in their logical locations, you can use
-*manifest files* to tell Rails (via the
-[Sprockets](https://github.com/sstephenson/sprockets) gem) how to
-combine them to form single files. (This applies to CSS and JavaScript
-but not to images.) As an example, let’s take a look at the default
-manifest file for app stylesheets
+一旦你把你的静态资源布置到了指定的位置上之后，你只需要一个清单文件(通过[Sprockets](https://github.com/sstephenson/sprockets)这个gem)来告诉 Rails 到底如何把多个文件组合成单个文件。例如，我们可以看一下app目录下的样式表清单文件。
+
 ([Listing 5.14](filling-in-the-layout#code-app_css_manifest)).
 
 Listing 5.14. The manifest file for app-specific CSS. \
@@ -837,9 +599,7 @@ Listing 5.14. The manifest file for app-specific CSS. \
      *= require_self
      *= require_tree . 
     */
-
-The key lines here are actually CSS comments, but they are used by
-Sprockets to include the proper files:
+以下一行虽然是CSS的注释，但是它们却会被Sprockets处理，把对应文件引入。
 
     /*
      .
@@ -849,52 +609,36 @@ Sprockets to include the proper files:
      *= require_tree . 
     */
 
-Here
+这里
 
     *= require_tree .
 
-ensures that all CSS files in the `app/assets/stylesheets` directory
-(including the tree subdirectories) are included into the application
-CSS. The line
+保证了所有 `app/assets/stylesheets` 目录下的 CSS 文件都被引入到应用中去。
+而
 
     *= require_self
 
-ensures that CSS in `application.css` is also included.
+这一行保证了 `application.css`  文件本身也被引入。
 
-Rails comes with sensible default manifest files, and in the *Rails
-Tutorial* we won’t need to make any changes, but the [Rails Guides entry
-on the asset
-pipeline](http://guides.rubyonrails.org/asset_pipeline.html) has more
-detail if you need it.
+Rails 应用新建的时候就有一个默认的清单文件，而在本教程中我们不需要做任何的更改，你可以在 [Rails Guides entry on the asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html) 中找到更多的信息。
 
-#### [Preprocessor engines](filling-in-the-layout#sec-5_2_1_3)
+#### [文件预处理](filling-in-the-layout#sec-5_2_1_3)
 
-After you’ve assembled your assets, Rails prepares them for the site
-template by running them through several preprocessing engines and using
-the manifest files to combine them for delivery to the browser. We tell
-Rails which processor to use using filename extensions; the three most
-common cases are `.scss` for Sass, `.coffee` for CoffeeScript, and
-`.erb` for embedded Ruby (ERb). We first covered ERb in
-[Section 3.3.3](static-pages#sec-embedded_ruby), and cover Sass in
-[Section 5.2.2](filling-in-the-layout#sec-sass). We won’t be needing
-CoffeeScript in this tutorial, but it’s an elegant little language that
-compiles to JavaScript. (The [RailsCast on CoffeeScript
-basics](http://railscasts.com/episodes/267-coffeescript-basics) is a
-good place to start.)
+当你把你的静态文件准备妥当之后，Rails会根据你的文件清单进行预处理，之后通过Rails服务器传送给浏览器。文件的后缀指示出Rails要用什么如何处理对应的文件。例如使用Sass来处理  `.scss` 后缀，用CoffeeScript处理 `.coffee` ，用 Ruby 自带的 ERb 插件处理 `.erb` 文件。ERb和Sass我们都在前文提到过，本教程中我们不会使用 CoffeScript，但是这是一个轻量而优雅的 Javascript 编译语言(建议从[RailsCast on CoffeeScript basics](http://railscasts.com/episodes/267-coffeescript-basics)开始CoffeeScript的学习)。
 
-The preprocessor engines can be chained, so that
+预处理可以通过后缀的链接而依次执行，例如
 
 `foobar.js.coffee`
 
-gets run through the CoffeeScript processor, and
+将运行 CoffeeScript 处理器，而
 
 `foobar.js.erb.coffee`
 
-gets run through both CoffeeScript and ERb (with the code running from
-right to left, i.e., CoffeeScript first).
+将运行CoffeeScript 处理器之后再执行 ERb 处理。
 
-#### [Efficiency in production](filling-in-the-layout#sec-5_2_1_4)
+#### [高效的生产模式](filling-in-the-layout#sec-5_2_1_4)
 
+asset pipeline 中最棒的事情就是其能够在生产模式中大大优化服务器的效率。传统的服务器是将 CSS 和 JavaScript 逐文件地传送至浏览器上。虽然这样便于开发，但是却大大增加客户端的载入时间(客户的交互速度是应用设计重要环节)。然而通过 asset pipeline ,在生产模式中所有应用的样式表和脚本代码将会分别合并压缩成单个文件
 One of the best things about the asset pipeline is that it automatically
 results in assets that are optimized to be efficient in a production
 application. Traditional methods for organizing CSS and JavaScript
@@ -2256,3 +2000,4 @@ Listing 5.38. Replacing the `full_title` test helper with a simple
 
     include ApplicationHelper
 
+-   `lib/assets
