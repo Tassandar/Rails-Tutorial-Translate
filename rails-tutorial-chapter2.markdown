@@ -581,12 +581,14 @@ Microposts控制器示意代码如代码2.8所示。和代码2.3相比，除了�
 
 **代码 2.11 每一条微博信息都是属于某一个用户的**
 
-``` ruby app/models/micropost.rb
+``` 
+  ruby app/models/micropost.rb
     class Micropost < ActiveRecord::Base
       belongs_to :user
 
       validates :content, :length => { :maximum => 140 }
     end
+    
 ```
 
 我们可以想象以上的关系就如图2.15所示。因为microposts表中有user_id的字段，Rails（使用Active Record）可以猜测出微博信息microposts和用户的关系
