@@ -638,49 +638,18 @@ Rails 应用新建的时候就有一个默认的清单文件，而在本教程�
 
 #### [高效的生产模式](filling-in-the-layout#sec-5_2_1_4)
 
-asset pipeline 中最棒的事情就是其能够在生产模式中大大优化服务器的效率。传统的服务器是将 CSS 和 JavaScript 逐文件地传送至浏览器上。虽然这样便于开发，但是却大大增加客户端的载入时间(客户的交互速度是应用设计重要环节)。然而通过 asset pipeline ,在生产模式中所有应用的样式表和脚本代码将会分别合并压缩成单个文件
-One of the best things about the asset pipeline is that it automatically
-results in assets that are optimized to be efficient in a production
-application. Traditional methods for organizing CSS and JavaScript
-involve splitting functionality into separate files and using nice
-formatting (with lots of indentation). While convenient for the
-programmer, this is inefficient in production; including multiple
-full-sized files can significantly slow page-load times (one of the most
-important factors affecting the quality of the user experience). With
-the asset pipeline, in production all the application stylesheets get
-rolled into one CSS file (`application.css`), all the application
-JavaScript code gets rolled into one JavaScript file (`javascripts.js`),
-and all such files (including those in `lib/assets` and `vendor/assets`)
-are *minified* to remove the unnecessary whitespace that bloats file
-size. As a result, we get the best of both worlds: multiple nicely
-formatted files for programmer convenience, with single optimized files
-in production.
+asset pipeline 中最棒的事情就是其能够在生产模式中大大优化服务器的效率。传统的服务器是将 CSS 和 JavaScript 逐文件地传送至浏览器上。虽然这样便于开发，但是却大大增加客户端的载入时间(客户的交互速度是应用设计重要环节)。然而通过 asset pipeline ,在生产模式中所有应用的样式表和脚本代码将会分别合并压缩成单个文件(`application.css`和`javascripts.js),并且排除掉页面上无需载入的文件，大大方便了编程人员，也加速了页面的访问速度。
 
-### [5.2.2 Syntactically awesome stylesheets](filling-in-the-layout#sec-sass)
+### [5.2.2 强化语法样式表](filling-in-the-layout#sec-sass)
 
-*Sass* is a language for writing stylesheets that improves on CSS in
-many ways. In this section, we cover two of the most important
-improvements, *nesting* and *variables*. (A third technique, *mixins*,
-is introduced in [Section 7.1.1](sign-up#sec-rails_environments).)
 
-As noted briefly in
-[Section 5.1.2](filling-in-the-layout#sec-custom_css), Sass supports a
-format called SCSS (indicated with a `.scss` filename extension), which
-is a strict superset of CSS itself; that is, SCSS only *adds* features
-to CSS, rather than defining an entirely new syntax.^[9](#fn-5_9)^ This
-means that every valid CSS file is also a valid SCSS file, which is
-convenient for projects with existing style rules. In our case, we used
-SCSS from the start in order to take advantage of Bootstrap. Since the
-Rails asset pipeline automatically uses Sass to process files with the
-`.scss` extension, the `custom.css.scss` file will be run through the
-Sass preprocessor before being packaged up for delivery to the browser.
+*Sass*  是一种为了改善CSS语言而存在的工具。在这一节，我们将会对CSS进行两项重要的优化，为CSS加上 *nesting* 和 变量。(我们还会在 [Section 7.1.1](sign-up#sec-rails_environments)加上第三个技术 *mixins*).
+
+我们曾经在[Section 5.1.2](filling-in-the-layout#sec-custom_css)中提到，Sass支持SCSS格式的文件(用 `.scss` 当作后缀)，该技术完全对CSS兼容————这意味着你完全可以在一个scss文件中写满css语法.最初，我们是因为Bootstrap中要用上SASS，而事实上，Rails 的asset pipeline 支持Sass的处理，Rails会自动地识别scss后缀的文件，并使用SASS软件进行预处理。
 
 #### [Nesting](filling-in-the-layout#sec-5_2_2_1)
 
-A common pattern in stylesheets is having rules that apply to nested
-elements. For example, in
-[Listing 5.5](filling-in-the-layout#code-universal_css) we have rules
-both for `.center` and for `.center h1`:
+一种样式表中常见的形式就是内嵌。例如在下面我们把`.center h1` 表示存在于 `.center` 的属性中。
 
     .center {
       text-align: center;
@@ -690,7 +659,7 @@ both for `.center` and for `.center h1`:
       margin-bottom: 10px;
     }
 
-We can replace this in Sass with
+在Sass 中，我们可以这么表示：
 
     .center {
       text-align: center;
@@ -699,11 +668,9 @@ We can replace this in Sass with
       }  
     }
 
-Here the nested `h1` rule automatically inherits the `.center` context.
+这里的 `h1` 就将自动继承上文的 `.center` 。
 
-There’s a second candidate for nesting that requires a slightly
-different syntax. In [Listing 5.7](filling-in-the-layout#code-logo_css),
-we have the code
+还有另外一个例子：
 
     #logo {
       float: left;
@@ -722,11 +689,7 @@ we have the code
       text-decoration: none;
     }
 
-Here the logo id `#logo` appears twice, once by itself and once with the
-`hover` attribute (which controls its appearance when the mouse pointer
-hovers over the element in question). In order to nest the second rule,
-we need to reference the parent element `#logo`; in SCSS, this is
-accomplished with the ampersand character `&` as follows:
+这里id为 `#logo` 的元素出现了两次，一次是定义自己的属性，另一次是定义其 `hover` 状态的属性。在SCSS文件中，我们就可以运用 `&` 更优雅地表达我们的语句：
 
     #logo {
       float: left;
@@ -744,12 +707,9 @@ accomplished with the ampersand character `&` as follows:
       }
     }
 
-Sass changes `&:hover` into `#logo:hover` as part of converting from
-SCSS to CSS.
+Sass在进行处理的时候会把 把`&:hover` 转换为 `#logo:hover` 的CSS语法。
 
-Both of these nesting techniques apply to the footer CSS in
-[Listing 5.13](filling-in-the-layout#code-footer_css), which can be
-transformed into the following:
+我们再把这两种nesting技巧运用到我们footer段的CSS文件中，把它改写成这样：
 
     footer {
       margin-top: 45px;
@@ -775,17 +735,11 @@ transformed into the following:
       }
     }
 
-Converting [Listing 5.13](filling-in-the-layout#code-footer_css) by hand
-is a good exercise, and you should verify that the CSS still works
-properly after the conversion.
+这段代码是一个好很的练习机会，改写后你会发现页面并没有出现改变。
 
-#### [Variables](filling-in-the-layout#sec-5_2_2_2)
+#### [变量](filling-in-the-layout#sec-5_2_2_2)
 
-Sass allows us to define *variables* to eliminate duplication and write
-more expressive code. For example, looking at
-[Listing 5.6](filling-in-the-layout#code-typography_css) and
-[Listing 5.13](filling-in-the-layout#code-footer_css), we see that there
-are repeated references to the same color:
+Sass 可以让我们可以使用变量来减少重复的表达式代码。如下，我们出现了一个语句的重复
 
     h2 {
       .
@@ -803,12 +757,11 @@ are repeated references to the same color:
       color: #999;
     }
 
-In this case, `#999` is a light gray, and we can give it a name by
-defining a variable as follows:
+在这里  `#999`  是亮灰色，我们可以给它一个一个变量名：
 
     $lightGray: #999;
 
-This allows us to rewrite our SCSS like this:
+现在我们可以这么撰写SCSS文件：
 
     $lightGray: #999;
     .
@@ -830,22 +783,14 @@ This allows us to rewrite our SCSS like this:
       color: $lightGray;
     }
 
-Because variable names such as `$lightGray` are more descriptive than
-`#999`, it’s often useful to define variables even for values that
-aren’t repeated. Indeed, the Bootstrap framework defines a large number
-of variables for colors, available online on the [Bootstrap page of LESS
-variables](http://bootstrapdocs.com/v2.0.4/docs/less.html). That page
-defines variables using LESS, not Sass, but the `bootstrap-sass` gem
-provides the Sass equivalents. It is not difficult to guess the
-correspondence; where LESS uses an “at” sign `@`, Sass uses a dollar
-sign `$`. Looking the Bootstrap variable page, we see that there is a
-variable for light gray:
+变量名 `$lightGray`，比原本的 `#999` 显得更加简单易懂，这种技巧常常运用在一块代码中出现了多次重复的表达式时。事实上，Bootstrap框架已经定义了很多种的颜色，公布在网上， [Bootstrap中的LESS](http://bootstrapdocs.com/v2.0.4/docs/less.html)，这里定义的时候用的是LESS语法，但是我们加入了 `bootstrap-sass` gem之后，同样的变量也被移植了过来。看出来其和Sass的对应关系应该不是什么难事，Less在 "@" 符号的地方用 "at" , Sass使用美元符号 `$`.看Bootstrap的变量，我们发现有一行定义：
 
-     @grayLight: #999;
+    @grayLight: #999;
+    
 
-This means that, via the `bootstrap-sass` gem, there should be a
-corresponding SCSS variable `$grayLight`. We can use this to replace our
-custom variable, `$lightGray`, which gives
+这意味着，在使用了 `bootstrap-sass` gem 的Rails应用中，我们直接写上`$lightGray`就可以获得所需要的功能：
+
+
 
     h2 {
       .
@@ -863,12 +808,7 @@ custom variable, `$lightGray`, which gives
       color: $grayLight;
     }
 
-Applying the Sass nesting and variable definition features to the full
-SCSS file gives the file in
-[Listing 5.15](filling-in-the-layout#code-refactored_scss). This uses
-both Sass variables (as inferred from the Bootstrap LESS variable page)
-and built-in named colors (i.e., `white` for `#fff`). Note in particular
-the dramatic improvement in the rules for the `footer` tag.
+应用上Sass的技巧之后我们整个SCSS文件变成了这样。
 
 Listing 5.15. The initial SCSS file converted to use nesting and
 variables. \
@@ -977,35 +917,22 @@ variables. \
       }
     }
 
-Sass gives us even more ways to simplify our stylesheets, but the code
-in [Listing 5.15](filling-in-the-layout#code-refactored_scss) uses the
-most important features and gives us a great start. See the [Sass
-website](http://sass-lang.com/) for more details.
+Sass给了我们简化样式表的手段，但是这只是Sass强大功能的冰山一角，如果你有兴趣，可以参照 [Sass website](http://sass-lang.com/) 获取更多信息。
 
-[5.3 Layout links](filling-in-the-layout#sec-layout_links)
+[5.3 Layout 链接](filling-in-the-layout#sec-layout_links)
 ----------------------------------------------------------
 
-Now that we’ve finished a site layout with decent styling, it’s time to
-start filling in the links we’ve stubbed out with `’#’`. Of course, we
-could hard-code links like
+我们已经完成了网站的布局样式代码，现在是时候让我们把原本预留的 `’#’` 链接替换成其他的链接了。当然，我们可以用这样的硬编码来实现
 
     <a href="/static_pages/about">About</a>
 
-but that isn’t the Rails Way. For one, it would be nice if the URI for
-the about page were /about rather than /static\_pages/about; moreover,
-Rails conventionally uses *named routes*, which involves code like
+但是这就没有 Rails 的感觉了。一般来说，对于URI，使用 /about 会比 /static\_pages/about 更好一点，在Rails 中，Rails 通常使用  *named routes* ，代码看起来可能像这样：
 
     <%= link_to "About", about_path %>
 
-This way the code has a more transparent meaning, and it’s also more
-flexible since we can change the definition of `about_path` and have the
-URI change everywhere `about_path` is used.
+这样的代码能够更加明确地说明代码含义，并且可移植性更强。
 
-The full list of our planned links appears in
-[Table 5.1](filling-in-the-layout#table-url_mapping), along with their
-mapping to URIs and routes. We’ll implement all but the last one by the
-end of this chapter. (We’ll make the last one in
-[Chapter 8](sign-in-sign-out#top).)
+下面这个列表是我们准备在首页上实现的所有URI链接和路由配置,我们将会依次实现它们。
 
   **Page**   **URI**    **Named route**
   ---------- ---------- -----------------
@@ -1018,14 +945,7 @@ end of this chapter. (We’ll make the last one in
 
 Table 5.1: Route and URI mapping for site links.
 
-Before moving on, let’s add a Contact page (left as an exercise in
-[Chapter 3](static-pages#top)). The test appears as in
-[Listing 5.16](filling-in-the-layout#code-contact_page_test), which
-simply follows the model last seen in
-[Listing 3.18](static-pages#code-pages_controller_spec_title). Note
-that, as in the application code, in
-[Listing 5.16](filling-in-the-layout#code-contact_page_test) we’ve
-switched to Ruby 1.9–style hashes.
+首先，我们先加入一个内容页面，在这之前我们要先写测试代码。
 
 Listing 5.16. Tests for a Contact page. \
 `spec/requests/static_pages_spec.rb`
@@ -1051,17 +971,12 @@ Listing 5.16. Tests for a Contact page. \
       end
     end
 
-You should verify that these tests fail:
+我们可以进行测试，它很理所应当地失败了。
 
     $ bundle exec rspec spec/requests/static_pages_spec.rb
 
-The application code parallels the addition of the About page in
-[Section 3.2.2](static-pages#sec-adding_a_page): first we update the
-routes ([Listing 5.17](filling-in-the-layout#code-contact_route)), then
-we add a `contact` action to the StaticPages controller
-([Listing 5.18](filling-in-the-layout#code-contact_action)), and finally
-we create a Contact view
-([Listing 5.19](filling-in-the-layout#code-contact_view)).
+之后，我们为我们加上路由配置，我们为 StaticPages 控制器加上了一个`contact` 行为，最后我们新建了一个 Contact 的视图。
+
 
 Listing 5.17. Adding a route for the Contact page. \
 `config/routes.rb`
@@ -1097,26 +1012,21 @@ Listing 5.19. The view for the Contact page. \
       <a href="http://railstutorial.org/contact">contact page</a>.
     </p>
 
-Now make sure that the tests pass:
+现在那个测试应该是通过了。
 
     $ bundle exec rspec spec/requests/static_pages_spec.rb
 
-### [5.3.1 Route tests](filling-in-the-layout#sec-route_tests)
+### [5.3.1 路由测试](filling-in-the-layout#sec-route_tests)
 
-With the work we’ve done writing integration test for the static pages,
-writing tests for the routes is simple: we just replace each occurrence
-of a hard-coded address with the desired named route from
-[Table 5.1](filling-in-the-layout#table-url_mapping). In other words, we
-change
+我们现在已经成功地完成了静态页面的测试，下一步是测试路由的正常运作。撰写一个路由测试很简单：我们只要把每一个硬编码的路由路径改为命名路由路径即可，例如我们把
 
     visit '/static_pages/about'
 
-to
+改为
 
     visit about_path
 
-and so on for the other pages. The result appears in
-[Listing 5.20](filling-in-the-layout#code-route_tests).
+其他的页面也类似，最后页面样式这样：
 
 Listing 5.20. Tests for the named routes. \
 `spec/requests/static_pages_spec.rb`
@@ -1187,46 +1097,27 @@ Listing 5.20. Tests for the named routes. \
       end
     end
 
-As usual, you should check that the tests are now red:
+和往常一样，我们先看看我们错误百出的测试。
 
     $ bundle exec rspec spec/requests/static_pages_spec.rb
 
-By the way, if the code in
-[Listing 5.20](filling-in-the-layout#code-route_tests) strikes you as
-repetitive and verbose, you’re not alone. We’ll refactor this mess into
-a beautiful jewel in
-[Section 5.3.4](filling-in-the-layout#sec-pretty_rspec).
+如果你觉得文中的代码反复而冗长，别担心，你不是唯一这么想的人，我们很快就会对该页面进行改进的。
 
-### [5.3.2 Rails routes](filling-in-the-layout#sec-rails_routes)
+### [5.3.2 Rails 路由](filling-in-the-layout#sec-rails_routes)
 
-Now that we have tests for the URIs we want, it’s time to get them to
-work. As noted in
-[Section 3.1.2](static-pages#sec-static_pages_with_rails), the file
-Rails uses for URI mappings is `config/routes.rb`. If you take a look at
-the default routes file, you’ll see that it’s quite a mess, but it’s a
-useful mess—full of commented-out example route mappings. I suggest
-reading through it at some point, and I also suggest taking a look at
-the [Rails Guides article “Rails Routing from the outside
-in”](http://guides.rubyonrails.org/routing.html) for a much more
-in-depth treatment of routes.
+现在我们已经如我们所愿测试了URI，是时候让它们跑起来看看了。另外提一句，我们在打开 `config/routes.rb` 文件的时候我们看到了默认路由中密密麻麻的注释代码，事实上，这些被注释的代码是对Rails路由语法的一种示例，你可以在这里[Rails Guides article “Rails Routing from the outside in”](http://guides.rubyonrails.org/routing.html)找到关于Rails路由的更多信息。
 
-To define the named routes, we need to replace rules such as
+要定义一个命名路由，我们首先要把get规则替换成match规则
 
     get 'static_pages/help'
 
-with
+改成
 
     match '/help', to: 'static_pages#help'
 
-This arranges both for a valid page at `/help` and a named route called
-`help_path` that returns the path to that page. (Actually, using `get`
-in place of `match` gives the same named routes, but using `match` is
-more conventional.)
+这样让  `/help` 和命名路由 `help_path` 都将能返回我们所需要的路径。在这里，get 和 match 其实结果都是一样的，但是实用 match 会更方便一点。
 
-Applying this pattern to the other static pages gives
-[Listing 5.21](filling-in-the-layout#code-static_page_routes). The only
-exception is the Home page, which we’ll take care of in
-[Listing 5.23](filling-in-the-layout#code-root_route).
+我们只有在 Home 页面中使用静态的路由配置.
 
 Listing 5.21. Routes for static pages. \
 `config/routes.rb`
@@ -1240,49 +1131,33 @@ Listing 5.21. Routes for static pages. \
       .
     end
 
-If you read the code in
-[Listing 5.21](filling-in-the-layout#code-static_page_routes) carefully,
-you can probably figure out what it does; for example, you can see that
+如果你仔细地阅读了上面的代码，你一定能明白它说的是什么意思。
 
     match '/about', to: 'static_pages#about'
 
-matches `’/about’` and routes it to the `about` action in the
-StaticPages controller. Before, this was more explicit: we used
+这里将匹配 '/about' 路径到 StaticPages 控制器 下的 `about` 方法。之前，我们用了更易懂的方法来处理： 
 
     get 'static_pages/about'
 
-to get to the same place, but `/about` is more succinct. In addition, as
-mentioned above, the code `match ’/about’` also automatically creates
-*named routes* for use in the controllers and views:
+这其实是同样的意思，但是 `/about` 显得更简洁一点。正如上文所提到的。 `match ’/about’` 同样为控制器和视图产生了命名路由：
 
     about_path => '/about'
     about_url  => 'http://localhost:3000/about'
 
-Note that `about_url` is the *full* URI http://localhost:3000/about
-(with `localhost:3000` being replaced with the domain name, such as
-`example.com`, for a fully deployed site). As discussed in
-[Section 5.3](filling-in-the-layout#sec-layout_links), to get just
-/about, you use `about_path`. In the *Rails Tutorial*, we’ll follow the
-common convention of using the `path` form except when doing redirects,
-where we’ll use the `url` form. This is because after redirects the HTTP
-standard technically requires a full URI, although in most browsers it
-will work either way.
+注意，`about_url` 生成的是完整的 URI 地址  http://localhost:3000/about。（在部署的时候，`localhost:3000` 会被替换成域名，例如 `example.com` 。）正如我们在[Section 5.3](filling-in-the-layout#sec-layout_links)中讨论的那样，要访问/about,你可以用 `about_path` 。在  *Rails Tutorial* 中，通常使用 `path`。然而当我们我们需要进行重定向的时候，我们将需要完整的 HTTP 地址，这时候我们将会用 `url` 后缀的格式，事实上，大部分浏览器这两种格式都是支持的。
 
-With these routes now defined, the tests for the Help, About, and
-Contact pages should pass:
+路由定义好了之后，我们可以开始测试 Help, About,Contact 页面了：
 
     $ bundle exec rspec spec/requests/static_pages_spec.rb
 
-This leaves the test for the Home page as the last one to fail.
+这时候应该只有 Home 页面还是处于fail状态。
 
-To establish the route mapping for the Home page, we *could* use code
-like this:
+要建立路由的Home页面，我们可以用这样的代码：
+
 
     match '/', to: 'static_pages#home'
 
-This is unnecessary, though; Rails has special instructions for the root
-URI / (“slash”) located lower down in the file
-([Listing 5.22](filling-in-the-layout#code-root_route_hint)).
+然而这是没有必要的，因为在Rails中存在一个特殊的指令来表示 URI / 表示文件的最底层。
 
 Listing 5.22. The commented-out hint for defining the root route. \
 `config/routes.rb`
@@ -1318,54 +1193,37 @@ Listing 5.23. Adding a mapping for the root route. \
       .
     end
 
-This code maps the root URI / to /static\_pages/home, and also gives URI
-helpers as follows:
+这代码将根URI / 映射到  /static\_pages/home，并且建立这样的Helper函数：
 
     root_path => '/'
     root_url  => 'http://localhost:3000/'
 
-We should also heed the comment in
-[Listing 5.22](filling-in-the-layout#code-root_route_hint) and delete
-`public/index.html` to prevent Rails from rendering the default page
-([Figure 1.3](beginning#fig-riding_rails_31)) when we visit /. You can
-of course simply remove the file by trashing it, but if you’re using Git
-for version control there’s a way to tell Git about the removal at the
-same time using `git rm`:
+这里我们需要留心提到过的[Listing 5.22](filling-in-the-layout#code-root_route_hint) 中删除 `public/index.html` 文件的问题。
+删除了之后，如果你有用 git 进行代码管理，还需要运行：
 
     $ git rm public/index.html
 
-You may recall from [Section 1.3.5](beginning#sec-git_commands) that we
-used the Git command `git commit -a -m "Message"`, with flags for “all
-changes” (`-a`) and a message (`-m`). As shown above, Git also lets us
-roll the two flags into one using `git commit -am "Message"`.
+来保证 git 删除了该文件。我们曾经在[Section 1.3.5](beginning#sec-git_commands)提到过了git的基本命令， 我们使用了Git命令   `git commit -a -m "Message"` 其中-a为 ”all changes “， -m 为message。作为缩写，Git 支持把两个标签缩写成一个，变成 `git commit -am "Message"`。
 
-With that, all of the routes for static pages are working, and the tests
-should pass:
+现在，所有的路由设置与静态页面都已经完成了，现在的测试就会通过：
 
     $ bundle exec rspec spec/requests/static_pages_spec.rb
 
-Now we just have to fill in the links in the layout.
+现在我们只是需要把链接写入布局文件中就可以了。
 
-### [5.3.3 Named routes](filling-in-the-layout#sec-named_routes)
+### [5.3.3 命名路由](filling-in-the-layout#sec-named_routes)
 
-Let’s put the named routes created in
-[Section 5.3.2](filling-in-the-layout#sec-rails_routes) to work in our
-layout. This will entail filling in the second arguments of the
-`link_to` functions with the proper named routes. For example, we’ll
-convert
+让我们在把[Section 5.3.2](filling-in-the-layout#sec-rails_routes) 中写好的路由名称填到布局文件中来。我们只要把对应的路由命填到 `link_to`  的第二个参数中就可以了，例如，我们把
 
     <%= link_to "About", '#' %>
 
-to
+改成
 
     <%= link_to "About", about_path %>
 
-and so on.
+就好。
 
-We’ll start in the header partial, `_header.html.erb`
-([Listing 5.24](filling-in-the-layout#code-header_partial_links)), which
-has links to the Home and Help pages. While we’re at it, we’ll follow a
-common web convention and link the logo to the Home page as well.
+我们从 header partial 开始，`_header.html.erb` 中有着 Home 和 Help 页面的链接，我们对他们作一些修改:
 
 Listing 5.24. Header partial with links. \
 `app/views/layouts/_header.html.erb`
@@ -1385,12 +1243,9 @@ Listing 5.24. Header partial with links. \
       </div>
     </header>
 
-We won’t have a named route for the “Sign in” link until
-[Chapter 8](sign-in-sign-out#top), so we’ve left it as `’#’` for now.
+我们在第八章才会开始制作登录界面，所以我们先留一个 `’#’` 在这里。
 
-The other place with links is the footer partial, `_footer.html.erb`,
-which has links for the About and Contact pages
-([Listing 5.25](filling-in-the-layout#code-footer_partial_links)).
+而在 footer partial文件中， `_footer.html.erb`,我们需要修改 About 和 Contact 页面。
 
 Listing 5.25. Footer partial with links. \
 `app/views/layouts/_footer.html.erb`
@@ -1409,18 +1264,9 @@ Listing 5.25. Footer partial with links. \
       </nav>
     </footer>
 
-With that, our layout has links to all the static pages created in
-[Chapter 3](static-pages#top), so that, for example,
-[/about](http://localhost:3000/about) goes to the About page
-([Figure 5.8](filling-in-the-layout#fig-about_page)).
+此时，我们已经把页面文件中所有的静态页面链接上了。
 
-By the way, it’s worth noting that, although we haven’t actually tested
-for the presence of the links on the layout, our tests will fail if the
-routes aren’t defined. You can check this by commenting out the routes
-in [Listing 5.21](filling-in-the-layout#code-static_page_routes) and
-running your test suite. For a testing method that actually makes sure
-the links go to the right places, see
-[Section 5.6](filling-in-the-layout#sec-layout_exercises).
+另外，值得一提的是，一旦填上了对应的Helper名，测试就会自动检测是否存在对应的路由定义。
 
 ![about\_page\_styled](/images/figures/about_page_styled.png)
 
@@ -1428,16 +1274,12 @@ Figure 5.8: The About page at
 [/about](http://localhost:3000/about). [(full
 size)](http://railstutorial.org/images/figures/about_page_styled-full.png)
 
-### [5.3.4 Pretty RSpec](filling-in-the-layout#sec-pretty_rspec)
+### [5.3.4 为RSpec锦上添花](filling-in-the-layout#sec-pretty_rspec)
 
-We noted in [Section 5.3.1](filling-in-the-layout#sec-route_tests) that
-the tests for the static pages are getting a little verbose and
-repetitive ([Listing 5.20](filling-in-the-layout#code-route_tests)). In
-this section we’ll make use of the latest features of RSpec to make our
-tests more compact and elegant.
+我们注意到在 [Section 5.3.1](filling-in-the-layout#sec-route_tests) 中，我们的测试文件有一些冗长和重复。在这一节里，我们将会用上 Rspec 的新特性来让代码显得更优雅。
 
-Let’s take a look at a couple of the examples to see how they can be
-improved:
+
+先关注一下我们原本的代码是怎么样的：
 
     describe "Home page" do
 
@@ -1458,8 +1300,7 @@ improved:
       end
     end
 
-One thing we notice is that all three examples include a visit to the
-root path. We can eliminate this duplication with a `before` block:
+首先被注意到的是所有的例子都包含了一个 visit 到 root path 的属性。我们可以通过使  用 `before` 代码块来处理它：
 
     describe "Home page" do
       before { visit root_path } 
@@ -1478,38 +1319,31 @@ root path. We can eliminate this duplication with a `before` block:
       end
     end
 
-This uses the line
+这里我们修改了这一行
 
     before { visit root_path }
 
-to visit the root path before each example. (The `before` method can
-also be invoked with `before(:each)`, which is a synonym.)
+这样保证了每一个测试都是在访问 root path.
 
-Another source of duplication appears in each example; we have both
+另一个重复代码是
 
     it "should have the h1 'Sample App'" do
 
-and
+和
 
     page.should have_selector('h1', text: 'Sample App')
 
-which say essentially the same thing. In addition, both examples
-reference the `page` variable. We can eliminate these sources of
-duplication by telling RSpec that `page` is the *subject* of the tests
-using
+这两个表达的其实是一样的事情。这里我们注意到，每个测试都引用了`page`变量，我们可以运用 Rspec 的  *subject*  语法来消除这一冗余。
 
     subject { page }
 
-and then using a variant of the `it` method to collapse the code and
-description into one line:
+并且在单行的 it 语法中，我们使用闭合式的代码块表示：
 
     it { should have_selector('h1', text: 'Sample App') }
 
-Because of `subject { page }`, the call to `should` automatically uses
-the `page` variable supplied by Capybara
-([Section 3.2.1](static-pages#sec-TDD)).
+因为我们申明了 `subject { page }`，所以调用 `should` 时 Capybara 会自动帮你选择使用page变量。
 
-Applying these changes gives much more compact tests for the Home page:
+现在，Home 页面的测试代码显得更加紧凑和优雅了：
 
       subject { page }
 
@@ -1522,23 +1356,11 @@ Applying these changes gives much more compact tests for the Home page:
         it { should_not have_selector 'title', text: '| Home' }
       end
 
-This code looks nicer, but the title test is still a bit long. Indeed,
-most of the title tests in
-[Listing 5.20](filling-in-the-layout#code-route_tests) have long title
-text of the form
+这样的代码看起来好多了。但是测试的标题看起来还是长了一点，事实上，在每一个测试的开头都有一行这样的长标题：
 
     "Ruby on Rails Tutorial Sample App | About"
 
-An exercise in [Section 3.5](static-pages#sec-static_pages_exercises)
-proposes eliminating some of this duplication by defining a `base_title`
-variable and using string interpolation
-([Listing 3.30](static-pages#code-pages_controller_spec_exercise)). We
-can do even better by defining a `full_title`, which parallels the
-`full_title` helper from
-[Listing 4.2](rails-flavored-ruby#code-title_helper). We do this by
-creating both a `spec/support` directory and a `utilities.rb` file for
-RSpec utilities
-([Listing 5.26](filling-in-the-layout#code-rspec_utilities)).
+在 [Section 3.5](static-pages#sec-static_pages_exercises) 的练习中，我们试着定义一个 `base_title` 变量来消除重复的标题字符串。现在，我们有更好的办法：定义一个 `full_title` 函数。为此，我们需要建立 `spec/support` 文件夹和 `utilities.rb`  文件。
 
 Listing 5.26. A file for RSpec utilities with a `full_title` function. \
 `spec/support/utilities.rb`
@@ -1552,16 +1374,9 @@ Listing 5.26. A file for RSpec utilities with a `full_title` function. \
       end
     end
 
-Of course, this is essentially a duplicate of the helper in
-[Listing 4.2](rails-flavored-ruby#code-title_helper), but having two
-independent methods allows us to catch any typos in the base title. This
-is dubious design, though, and a better (slightly more advanced)
-approach, which tests the original `full_title` helper directly, appears
-in the exercises
-([Section 5.6](filling-in-the-layout#sec-layout_exercises)).
+其实，这函数本质上还是我们在[Listing 4.2](rails-flavored-ruby#code-title_helper)中写的那个。但是两个独立的函数允许我们更加自由地组织我们的标题。这是一种很奇怪的设计，而更好的方法我们会在测试([Section 5.6](filling-in-the-layout#sec-layout_exercises))给出。
 
-Files in the `spec/support` directory are automatically included by
-RSpec, which means that we can write the Home tests as follows:
+在  `spec/support`  目录下的文件夹默认包括了 RSpec，这意味着我们可以在写 Home 页面测试可以这样：
 
       subject { page }
 
@@ -1572,9 +1387,7 @@ RSpec, which means that we can write the Home tests as follows:
         it { should have_selector('title', text: full_title('')) }
       end
 
-We can now simplify the tests for the Help, About, and Contact pages
-using the same methods used for the Home page. The results appear in
-[Listing 5.27](filling-in-the-layout#code-pretty_page_tests).
+这样我们就可以轻松地对 Home 页面照葫芦花瓢，写出我们的 Help, About, 和 Contact 页面。结果如下
 
 Listing 5.27. Prettier tests for the static pages. \
 `spec/requests/static_pages_spec.rb`
@@ -1615,42 +1428,20 @@ Listing 5.27. Prettier tests for the static pages. \
       end
     end
 
-You should now verify that the tests still pass:
+好了，我们现在可以进行测试，修改你的代码知道让他们全部通过：
 
     $ bundle exec rspec spec/requests/static_pages_spec.rb
 
-This RSpec style in
-[Listing 5.27](filling-in-the-layout#code-pretty_page_tests) is much
-pithier than the style in
-[Listing 5.20](filling-in-the-layout#code-route_tests)—indeed, it can be
-made even pithier
-([Section 5.6](filling-in-the-layout#sec-layout_exercises)). We will use
-this more compact style whenever possible when developing the rest of
-the sample application.
 
-[5.4 User signup: A first step](filling-in-the-layout#sec-user_signup)
+[5.4 新的开始：用户注册](filling-in-the-layout#sec-user_signup)
 ----------------------------------------------------------------------
 
-As a capstone to our work on the layout and routing, in this section
-we’ll make a route for the signup page, which will mean creating a
-second controller along the way. This is a first important step toward
-allowing users to register for our site; we’ll take the next step,
-modeling users, in [Chapter 6](modeling-users#top), and we’ll finish the
-job in [Chapter 7](sign-up#top).
+有了完整的 Rails 页面布局与路由作为一个基础，在这一章，我们要开始写用户注册界面，着意味着我们需要一个新的控制器。用户注册是用户在网站中的入口，是交互中极其重要的一环，在这一章我们会作出控制器，在下一章，我们会完成用户模型的搭建，我们会在第七章完成注册页面的工作。
 
-### [5.4.1 Users controller](filling-in-the-layout#sec-users_controller)
+### [5.4.1 用户控制器](filling-in-the-layout#sec-users_controller)
 
-It’s been a while since we created our first controller, the StaticPages
-controller, way back in
-[Section 3.1.2](static-pages#sec-static_pages_with_rails). It’s time to
-create a second one, the Users controller. As before, we’ll use
-`generate` to make the simplest controller that meets our present needs,
-namely, one with a stub signup page for new users. Following the
-conventional [REST
-architecture](http://en.wikipedia.org/wiki/Representational_State_Transfer)
-favored by Rails, we’ll call the action for new users `new` and pass it
-as an argument to `generate controller` to create it automatically
-([Listing 5.28](filling-in-the-layout#code-generate_users_controller)).
+上一个控制器似乎已经是非常遥远的事情了，StaticPages controller，要追溯到[Section 3.1.2](static-pages#sec-static_pages_with_rails)，是时候新建一个新控制器了： User controller .  和原来一样，我们需要运行 `generate` 命令来创建用户注册控制器的基础框架。根据我们之前提到的 [REST 架构](http://en.wikipedia.org/wiki/Representational_State_Transfer) ，我们要建立一个 建立用户的行为 `new`， 我们可以把 new 作为一个参数传给  ` generate controller ` 命令。
+
 
 Listing 5.28. Generating a Users controller (with a `new` action).
 
@@ -1668,10 +1459,7 @@ Listing 5.28. Generating a Users controller (with a `new` action).
           invoke    scss
           create      app/assets/stylesheets/users.css.scss
 
-This creates a Users controller with a `new` action
-([Listing 5.29](filling-in-the-layout#code-initial_users_controller))
-and a stub user view
-([Listing 5.30](filling-in-the-layout#code-initial_new_action)).
+这样，我们就创建了一个包含new行为的用户控制器，同时还新建了一个简单用户页面：
 
 Listing 5.29. The initial Users controller, with a `new` action. \
 `app/controllers/users_controller.rb`
@@ -1688,23 +1476,13 @@ Listing 5.30. The initial `new` action for Users. \
     <h1>Users#new</h1>
     <p>Find me in app/views/users/new.html.erb</p>
 
-### [5.4.2 Signup URI](filling-in-the-layout#sec-signup_url)
+### [5.4.2 注册 URI](filling-in-the-layout#sec-signup_url)
 
-With the code from
-[Section 5.4.1](filling-in-the-layout#sec-users_controller), we already
-have a working page for new users at /users/new, but recall from
-[Table 5.1](filling-in-the-layout#table-url_mapping) that we want the
-URI to be /signup instead. As in
-[Section 5.3](filling-in-the-layout#sec-layout_links), we’ll first write
-some integration tests, which we’ll now generate:
+完成了[Section 5.4.1](filling-in-the-layout#sec-users_controller)之后，我们已经在  /users/new 地址处获得了一个页面，但是根据我们在 [Table 5.1](filling-in-the-layout#table-url_mapping)计划的，我们想要一个  /signup 的uri 来作为注册页面地址。在开始我们的改动之前，和 [Section 5.3](filling-in-the-layout#sec-layout_links)一样，我们首先要写一个测试，可以这样生成： 
 
     $ rails generate integration_test user_pages
 
-Then, following the model of the static pages spec in
-[Listing 5.27](filling-in-the-layout#code-pretty_page_tests), we’ll fill
-in the user pages test with code to test for the contents of the `h1`
-and `title` tags, as seen in
-[Listing 5.31](filling-in-the-layout#code-user_pages_spec).
+然后如同我们在 static 页面测试中所做的一样，我们将会写上测试代码来对 `h1` 和  `title` 标签进行测试，如下：
 
 Listing 5.31. The initial spec for users, with a test for the signup
 page. \
@@ -1724,36 +1502,25 @@ page. \
       end
     end
 
-We can run these tests using the `rspec` command as usual:
+我们可以使用 `rspec` 来进行测试：
 
     $ bundle exec rspec spec/requests/user_pages_spec.rb
 
-It’s worth noting that we can also run all the request specs by passing
-the whole directory instead of just one file:
+还可以直接对目录下的所有文件进行测试：
 
     $ bundle exec rspec spec/requests/
 
-Based on this pattern, you may be able to guess how to run *all* the
-specs:
+或许你也猜到了，你甚至可以这样运行所有的 specs 测试：
 
     $ bundle exec rspec spec/
 
-For completeness, we’ll usually use this method to run the tests through
-the rest of the tutorial. By the way, it’s worth noting (since you may
-see other people use it) that you can also run the test suite using the
-`spec` Rake task:
+为了测试的完整，我们将来可能常常会使用这条命令进行测试。顺便提一句，有的人喜欢用 rake task 来进行完整的测试，像这样
 
     $ bundle exec rake spec
 
-(In fact, you can just type `rake` by itself; the default behavior of
-`rake` is to run the test suite.)
+甚至他们只需要键入 `rake` 就足够了，因为默认的rake行为就是运行测试套件。
 
-By construction, the Users controller already has a `new` action, so to
-get the test to pass all we need is the right route and the right view
-content. We’ll follow the examples from
-[Listing 5.21](filling-in-the-layout#code-static_page_routes) and add a
-`match ’/signup’` rule for the signup URI
-([Listing 5.32](filling-in-the-layout#code-signup_route)).
+至今，我们的用户控制器已经有了一个 `new` 行为，为了让我们的测试通过，我们需要写出正确的路由设置和视图内容。我们将会依据 [Listing 5.21](filling-in-the-layout#code-static_page_routes) 然后加入一行 `match ’/signup’` 。
 
 Listing 5.32. A route for the signup page. \
 `config/routes.rb`
@@ -1773,17 +1540,9 @@ Listing 5.32. A route for the signup page. \
       .
     end
 
-Note that we have kept the rule `get "users/new"`, which was generated
-automatically by the Users controller generation in
-[Listing 5.28](filling-in-the-layout#code-generate_users_controller).
-Currently, this rule is necessary for the `’users/new’` routing to work,
-but it doesn’t follow the proper REST conventions
-([Table 2.2](a-demo-app#table-demo_RESTful_users)), and we will
-eliminate it in [Section 7.1.2](sign-up#sec-a_users_resource).
+注意到文件中已经存在了 `get "users/new"` ，它由控制器的 generate 命令自动添加。虽然 `’users/new’` 这样的地址现在已经可用，但是这并不符合我们的REST标准 ([Table 2.2](a-demo-app#table-demo_RESTful_users))，我们将会在 [Section 7.1.2](sign-up#sec-a_users_resource)对其作出处理.
 
-To get the tests to pass, all we need now is a view with the title and
-heading “Sign up”
-([Listing 5.33](filling-in-the-layout#code-initial_signup_page)).
+为了让测试通过，我们所需要第一件事就是为视图文件添加一个 titile 和 “Sign up” 的头部标签：
 
 Listing 5.33. The initial (stub) signup page. \
 `app/views/users/new.html.erb`
@@ -1792,12 +1551,7 @@ Listing 5.33. The initial (stub) signup page. \
     <h1>Sign up</h1>
     <p>Find me in app/views/users/new.html.erb</p>
 
-At this point, the signup test in
-[Listing 5.31](filling-in-the-layout#code-user_pages_spec) should pass.
-All that’s left is to add the proper link to the button on the Home
-page. As with the other routes, `match ’/signup’` gives us the named
-route `signup_path`, which we put to use in
-[Listing 5.34](filling-in-the-layout#code-home_page_signup_link).
+现在 signup 的测试应该能够通过了，接下来的是给 Home 页面加入一个 button 。我们在路由文件中写入了  `match ’/signup’`，这将生成一个叫  `signup_path` 的路径helper，我们可以把它用上了：
 
 Listing 5.34. Linking the button to the Signup page. \
 `app/views/static_pages/home.html.erb`
@@ -1816,10 +1570,7 @@ Listing 5.34. Linking the button to the Signup page. \
 
     <%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
 
-With that, we’re done with the links and named routes, at least until we
-add a route for signing in ([Chapter 8](sign-in-sign-out#top)). The
-resulting new user page (at the URI /signup) appears in
-[Figure 5.9](filling-in-the-layout#fig-new_signup_page).
+至此，我们已经暂时完成了所有的链接和命名路由的设置，最终结果如图：
 
 ![new\_signup\_page\_bootstrap](/images/figures/new_signup_page_bootstrap.png)
 
@@ -1827,177 +1578,37 @@ Figure 5.9: The new signup page at
 [/signup](http://localhost:3000/signup). [(full
 size)](http://railstutorial.org/images/figures/new_signup_page_bootstrap-full.png)
 
-At this point the tests should pass:
+此时应该能够通过所有的测试：
 
     $ bundle exec rspec spec/
 
-[5.5 Conclusion](filling-in-the-layout#sec-layout_conclusion)
+[5.5 总结整理](filling-in-the-layout#sec-layout_conclusion)
 -------------------------------------------------------------
 
-In this chapter, we’ve hammered our application layout into shape and
-polished up the routes. The rest of the book is dedicated to fleshing
-out the sample application: first, by adding users who can sign up, sign
-in, and sign out; next, by adding user microposts; and, finally, by
-adding the ability to follow other users.
+在这一章中，我们对应用的布局和路由进行了修改。接下来，本书会渐渐地完善这一个简单的示例程序：用户可以在这样的程序中注册，登录，登出，发布微博，最后能够让用户互相关注。
 
-At this point, if you are using Git you should merge the changes back
-into the master branch:
+而现在，我们应该使用 Git 来把我们的成果合并到 master 分支上：
 
     $ git add .
     $ git commit -m "Finish layout and routes"
     $ git checkout master
     $ git merge filling-in-layout
 
-You can also push up to GitHub:
+然后push到Github上
 
     $ git push
 
-Finally, you can deploy to Heroku:
+部署
 
     $ git push heroku
 
-The result should be a working sample application on the production
-server:
+查看自己的成果
 
     $ heroku open
 
-If you run into trouble, try running
+如果出错了，可以如下查看日志
 
     $ heroku logs
 
-to debug the error using the Heroku logfile.
+并根据 heroku 的日志来进行 debug.
 
-[5.6 Exercises](filling-in-the-layout#sec-layout_exercises)
------------------------------------------------------------
-
-1.  The code in
-    [Listing 5.27](filling-in-the-layout#code-pretty_page_tests) for
-    testing static pages is compact but is still a bit repetitive. RSpec
-    supports a facility called *shared examples* to eliminate the kind
-    of duplication. By following the example in
-    [Listing 5.35](filling-in-the-layout#code-static_pages_spec_shared_example),
-    fill in the missing tests for the Help, About, and Contact pages.
-    Note that the `let` command, introduced briefly in
-    [Listing 3.30](static-pages#code-pages_controller_spec_exercise),
-    creates a local variable with the given value on demand (i.e., when
-    the variable is used), in contrast to an instance variable, which is
-    created upon assignment.
-2.  You may have noticed that our tests for the layout links test the
-    routing but don’t actually check that the links on the layout go to
-    the right pages. One way to implement these tests is to use `visit`
-    and `click_link` inside the RSpec integration test. Fill in the code
-    in [Listing 5.36](filling-in-the-layout#code-layout_links_test) to
-    verify that all the layout links are properly defined.
-3.  Eliminate the need for the `full_title` test helper in
-    [Listing 5.26](filling-in-the-layout#code-rspec_utilities) by
-    writing tests for the original helper method, as shown in
-    [Listing 5.37](filling-in-the-layout#code-full_title_helper_tests).
-    (You will have to create both the `spec/helpers` directory and the
-    `application_helper_spec.rb` file.) Then `include` it into the test
-    using the code in
-    [Listing 5.38](filling-in-the-layout#code-rspec_utilities_simplified).
-    Verify by running the test suite that the new code is still valid.
-    *Note*:
-    [Listing 5.37](filling-in-the-layout#code-full_title_helper_tests)
-    uses *regular expressions*, which we’ll learn more about in
-    [Section 6.2.4](modeling-users#sec-format_validation). (Thanks to
-    [Alex Chaffee](http://alexchaffee.com/) for the suggestion and code
-    used in this exercise.)
-
-Listing 5.35. Using an RSpec shared example to eliminate test
-duplication. \
-`spec/requests/static_pages_spec.rb`
-
-    require 'spec_helper'
-
-    describe "Static pages" do
-
-      subject { page }
-
-      shared_examples_for "all static pages" do
-        it { should have_selector('h1',    text: heading) }
-        it { should have_selector('title', text: full_title(page_title)) }
-      end
-
-      describe "Home page" do
-        before { visit root_path }
-        let(:heading)    { 'Sample App' }
-        let(:page_title) { '' }
-
-        it_should_behave_like "all static pages"
-        it { should_not have_selector 'title', text: '| Home' }
-      end
-
-      describe "Help page" do
-        .
-        .
-        .
-      end
-
-      describe "About page" do
-        .
-        .
-        .
-      end
-
-      describe "Contact page" do
-        .
-        .
-        .
-      end
-    end
-
-Listing 5.36. A test for the links on the layout. \
-`spec/requests/static_pages_spec.rb`
-
-    require 'spec_helper'
-
-    describe "Static pages" do
-      .
-      .
-      .
-      it "should have the right links on the layout" do
-        visit root_path
-        click_link "About"
-        page.should have_selector 'title', text: full_title('About Us')
-        click_link "Help"
-        page.should # fill in
-        click_link "Contact"
-        page.should # fill in
-        click_link "Home"
-        click_link "Sign up now!"
-        page.should # fill in
-        click_link "sample app"
-        page.should # fill in
-      end
-    end
-
-Listing 5.37. Tests for the `full_title` helper. \
-`spec/helpers/application_helper_spec.rb`
-
-    require 'spec_helper'
-
-    describe ApplicationHelper do
-
-      describe "full_title" do
-        it "should include the page title" do
-          full_title("foo").should =~ /foo/
-        end
-
-        it "should include the base title" do
-          full_title("foo").should =~ /^Ruby on Rails Tutorial Sample App/
-        end
-
-        it "should not include a bar for the home page" do
-          full_title("").should_not =~ /\|/
-        end
-      end
-    end
-
-Listing 5.38. Replacing the `full_title` test helper with a simple
-`include`. \
-`spec/support/utilities.rb`
-
-    include ApplicationHelper
-
--   `lib/assets
