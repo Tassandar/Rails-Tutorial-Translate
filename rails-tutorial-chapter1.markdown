@@ -1,4 +1,3 @@
-
 开始翻译 [Ruby on Rails Tutorial](http://ruby.railstutorial.org/) 转载请注明出处与原作者 [Michael Hartl](http://ruby.railstutorial.org/) 
 
 欢迎来到跟我实例学 [Ruby on Rails](http://ruby.railstutorial.org/)教程. 这本书的目的是要成为“我如何开始做Ruby on Rails ？”的最佳答案。当你完成这个ror教程之后你将学会与开发部署你自己的网页.
@@ -12,7 +11,7 @@ ruby on rails教程与许多别的rails教程书一样，通过构建许多小�
 
 在第二章，我们将会制作第二个工程，做它的目的是为了展示rails的应用的基础特性。为了快速开发部署，我们建立了了<code>demo app</code>(名字是 demo_app）使用scaffolding脚手架来生成代码，——生成的代码又丑又复杂，第二章主要会关注它如何通过URLs和浏览器来浏览网页。
 
-在第三章，我们将会创建一个 sample application (名叫sample_app),这次的代码将会全部用scratch的方法生成。我们将会开发那个例程通过使用 驱动驱动开发（TDD **test-driven-development**）从第三章开始我们将会创建一个静态的页面，然后我们再加入一些动态的内容。我们将会在第四章走开一会，来关注一下rails底下Ruby语言特性。然后在第五章到第十章我们将会通过使用网页布局，用户数据库，全方位的注册和认证系统来完整的建立这个实例程序。最后在第十一章和第十二章我们将会加入微博和社会化特性来完成这个实例站点。
+在第三章，我们将会创建一个 sample application (名叫sample_app),这次的代码将会全部用scratch的方法生成。我们将会开发那个例程通过使用 测试驱动开发（TDD **test-driven-development**）从第三章开始我们将会创建一个静态的页面，然后我们再加入一些动态的内容。我们将会在第四章走开一会，来关注一下rails底下Ruby语言特性。然后在第五章到第十章我们将会通过使用网页布局，用户数据库，全方位的注册和认证系统来完整的建立这个实例程序。最后在第十一章和第十二章我们将会加入微博和社会化特性来完成这个实例站点。
 
 最后这个实例程序将会与一个实实在在的流行的微博社交网站(twitter)十分相似，巧合的事，twitter也是用rails开发的。虽然我们一直在关注的是这个实实在在的示例站点，但是关键的是我们通过ruby on rails 教程将会学到许多通用的法则，这将会让你不管开发什么网站都一个扎实的基础。
 <!--more-->
@@ -29,7 +28,7 @@ ruby on rails教程与许多别的rails教程书一样，通过构建许多小�
 
 是什么让rails变得那么的强大？首先，ruby on rails是100%开源的，基于[MIT 认证](http://www.opensource.org/licenses/mit-license.php),对于任何人都是完全免费下载使用的。rails的成功也归功与它优雅而紧密的设计，在其底层的ruby语言同样让人感到惊叹不已。rails为网站开发有效的创建了一个全新的[专属语言（domain-specific language）](http://en.wikipedia.org/wiki/Domain_Specific_Language)。许多常见的网络开发任务，例如生成HTML，使用数据库模型，生成网址路由，对于rails都是轻而易举的。更重要的是，最终的rails应用程序总是简洁而可读性强。
 
-rails同样适用于一个全新的网络框架与技术新手。举例来说，rails是第一个完整的使用digest实现REST网站构架的应用程序（我们很快就会在这篇教材里面学到了。）并且当其他框架拥有了新的功能的时候rails的开发者David Heinemeier Hansson和rails的核心小组绝不会对加入那些诱人的idea有任何的由于。其中最戏剧性的就是rails 和Merb的合并，（merb是另一个ruby网络框架）这样rails就拥有了merb中引入的更强大的模块设计，稳定的api和更佳的特性。
+rails同样适用于一个全新的网络框架与技术新手。举例来说，rails是第一个完整的使用digest实现REST网站构架的应用程序（我们很快就会在这篇教材里面学到了。）并且当其他框架拥有了新的功能的时候rails的开发者David Heinemeier Hansson和rails的核心小组绝不会对加入那些诱人的idea有任何的犹豫。其中最戏剧性的就是rails 和Merb的合并，（merb是另一个ruby网络框架）这样rails就拥有了merb中引入的更强大的模块设计，稳定的api和更佳的特性。
 
 最后，rails也从不同的社区中受益良多，其中包括了成百个开源的作者，热闹的讨论组，大量的插件和gems（包括了对某些特定问题的解决方案例如图片上传和分页设计），丰富多彩的博客和rails论坛和irc频道。大量的rails编程人员也在让解决那些应用程式问题变得更佳简单：“Google the error message”几乎总是能把你带到你最需要的那篇博客或者论坛上去。
 
@@ -39,7 +38,7 @@ rails同样适用于一个全新的网络框架与技术新手。举例来说，
 
 rails 很多时候会有一些看起来如同“魔法”一般的特性（例如直接就能够建立数据库表单项目）来完成一个一个的奇迹，但是实际上rails的构造更佳的神秘，这个ruby on rails教程并不准备具体戒指这些“魔法”——主要是作为一个rails开发者你并不需要彻底明白在这一层华丽的外边后面的工作机制（就如同ruby绝大部分使用C语言设计的，但是你没必要去研究ruby的源代码来使用ruby一样）。如果你是一个打破砂锅问到底的人。那么我建议你去读读Obie Fernandez写的The Rails 3 Way，你可以把它收藏起来，在学习这个教程的统一读一读。
 
-虽然本教程没有什么先决条件，但是你至少也应该有一些计算机经验。如果你连文本编辑器的使用经验都没有，那么恐怕你要学起来就会非常的困难。另一方面，即使你的 <code>.emacs</code>文件复杂到成年人都想哭的地步的话这篇教材同样会有让你感到挑战的东西的。rails教程被设计成一个无论你的背景是什么都能够通过你自己独特的方法学到很多东西的东西。
+虽然本教程没有什么先决条件，但是你至少也应该有一些计算机经验。如果你连文本编辑器的使用经验都没有，那么恐怕你要学起来就会非常的困难。另一方面，即使你的 `.emacs`文件复杂到成年人都想哭的地步的话这篇教材同样会有让你感到挑战的东西的。rails教程被设计成一个无论你的背景是什么都能够通过你自己独特的方法学到很多东西的东西。
 
 **对于所有读者**：学习rails最常见的一个问题就是是否应该先去学ruby语言。这个答案取决与你的个人学习习惯。如果你通常会系统的去学习一个东西的话，那么从ruby学起应该会是很好的选择。这章里会有几本相当不错的书推荐给你看。另一方面，许多rails开发者都对制作网络应用相当感兴趣，同时他们不想在制作出一个web应用之前阅读500页的ruby手册。而且rails开发者所关注的知识恐怕你在纯粹的ruby书中是找不到的——但是在本教程中你能够轻松获取。我建议你从这个rails教程开始，然后去阅读纯粹的ruby语言书。我觉得这个并不是二选一的事情，而是——如果你上手了rails开发并且感觉你需要一些ruby的知识，，那么，你可以停下来看看ruby编程书，然后在你觉得OK了的时候重新上路。你可能会想通过网络中简短的教程尝试一下ruby编程。你可以在(http://www.ruby-lang.org/) 或者 (http://rubylearning.com/)找到你想要的。
 
@@ -119,7 +118,7 @@ Rails现在也可以作为一个命令来运行了,例如我们在1.2.5就会运
 
 	/Users/mhartl/rails_projects/sample_app/config/routes.rb
 
-我会简写成<code>config/routes.rb</code>.
+我会简写成`config/routes.rb`.
 
 最后，Rails Rutorial 常常会输出不同的程序和文件，由于不同的计算机系统可能大家看到的又些许区别，但是这没有问题。另外，有意写命令可能由于你的计算机系统会产生错误信息，与其去一点一点的分析[Sisyphean](http://en.wikipedia.org/wiki/Sisyphus)错误日志，我觉得直接"Google 一下"回事更好的方法，这也将成为你在实践部署中的宝贵经验。
 
@@ -139,11 +138,11 @@ rails并不缺少支持 rails 的 IDE，有：[RadRails](http://www.aptana.com/r
 
 如果不用IDE那还能用什么开发rails呢？我想大部分的开发者会和我的选择一样：用文本编辑器来编辑rails代码，用命令行去让rails跑起来。具体用什么我想这个取决与你使用的平台：
 
-    Machintosh OS X：和许多rails开发者一样，我推荐 [TextMate](http://macromates.com/).另一个选择是 [Emacs](www.gnu.org/s/emacs/) 和 MacVim（这是一个相当不错的vim的mac定制版）。我用 iTerm 来作为我的命令行终端，用自带的终端当然也没问题。
+>Machintosh OS X：和许多rails开发者一样，我推荐 [TextMate](http://macromates.com/).另一个选择是 [Emacs](www.gnu.org/s/emacs/) 和 MacVim（这是一个相当不错的vim的mac定制版）。我用 iTerm 来作为我的命令行终端，用自带的终端当然也没问题。
 
-    Linux ：你的文本编辑器可能和 OS X 下的基本一直，除了没有了TextMate。。。我建议你使用图形界面的 gVim ，或者是带上 GMate 插件的 gedit 。或者 Kate 也行.命令行的话。。目前我还没有听说有哪个linux的发行般会没有带终端程序。
+>Linux ：你的文本编辑器可能和 OS X 下的基本一直，除了没有了TextMate。。。我建议你使用图形界面的 gVim ，或者是带上 GMate 插件的 gedit 。或者 Kate 也行.命令行的话。。目前我还没有听说有哪个linux的发行般会没有带终端程序。
 
-    Windows :推荐的 Windows 文本编辑器有： Vim ， [E Text Editor](http://www.e-texteditor.com/) , [Komodo Edit](http://www.activestate.com/komodo_edit/) 还有 [Sublime Text](http://www.sublimetext.com/).对于命令行，我建议使用 Rails Installer 自带的 命令行 程序。
+>Windows :推荐的 Windows 文本编辑器有： Vim ， [E Text Editor](http://www.e-texteditor.com/) , [Komodo Edit](http://www.activestate.com/komodo_edit/) 还有 [Sublime Text](http://www.sublimetext.com/).对于命令行，我建议使用 Rails Installer 自带的 命令行 程序。
 
 如果你的选择是Vim，那么我建议你去好好看看 [Vim-using Rails hackers](http://www.google.com/search?q=vim+rails) 。尤其是 [rails.vim](http://www.vim.org/scripts/script.php?script_id=1567) 和 [NERDTree](http://www.vim.org/scripts/script.php?script_id=1567) 增强插件。
 
@@ -196,7 +195,6 @@ Ruby 1.9 作出了非常多的改动，所以你想要直接用上最新的Ruby�
 
 	$ rvm install 1.8.7-p302
 
-)
 
 Ruby程序通常通过 gems 分布式的进行管理，gems 包自己也包含着Ruby代码，如果你的gems会因为不同版本的Ruby而冲突，建立不同的 gemets 来管理gems是一个不错的选择。需要指出的是，rails也是一个gem包，而且rails 2 和rails 3 就是互相冲突的。所以如果你需要在同一个系统上面运行不同版本的rails你可以这样来创立两个不同的 gemset ：
 
@@ -255,29 +253,27 @@ RubyGems是Ruby项目的包管理程序，包含的上千个优秀应用（包�
 
 Running the rails script to generate a new application.
 
-```
-$ mkdir rails_projects
-$ cd rails_projects
-$ rails new first_app
-      create
-      create  README
-      create  .gitignore
-      create  Rakefile
-      create  config.ru
-      create  Gemfile
-      create  app
-      create  app/controllers/application_controller.rb
-      create  app/helpers/application_helper.rb
-      create  app/views/layouts/application.html.erb
-      create  app/models
-      create  config
-      create  config/routes.rb
-      create  config/application.rb
-      create  config/environment.rb
-      .
-      .
-      .
-```
+	$ mkdir rails_projects
+	$ cd rails_projects
+	$ rails new first_app
+	      create
+	      create  README
+	      create  .gitignore
+	      create  Rakefile
+	      create  config.ru
+	      create  Gemfile
+	      create  app
+	      create  app/controllers/application_controller.rb
+	      create  app/helpers/application_helper.rb
+	      create  app/views/layouts/application.html.erb
+	      create  app/models
+	      create  config
+	      create  config/routes.rb
+	      create  config/application.rb
+	      create  config/environment.rb
+	      .
+	      .
+	      .
 
 注意rails创建的这些文件和文件夹，这些标准文件和文件夹的结构是一个rails的优点，它能够迅速的从零开始搭建应用程序。另外，因为这些文件夹文件的结构对于任何rails工程都是相同的，所以你可以迅速上手不同rails开发者的代码。rails默认生成的文章结构如下：
 
