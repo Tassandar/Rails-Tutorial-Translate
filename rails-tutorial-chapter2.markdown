@@ -1,7 +1,8 @@
-翻译 [ruby on rails Tutorial](http://ruby.railstutorial.org/chapters/a-demo-app#top),原作者 [Michael Hartl](http://michaelhartl.com/) .
 
 
 ###第二章
+
+翻译 [ruby on rails Tutorial](http://ruby.railstutorial.org/chapters/a-demo-app#top),原作者 [Michael Hartl](http://michaelhartl.com/) .
 
 ##示例程序
 
