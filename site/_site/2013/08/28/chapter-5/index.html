@@ -1,0 +1,1654 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Chapter 5</title>
+	<meta name="author" content="Name Lastname">
+	<link href='/assets/themes/the-minimum/css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="Chapter 5" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<p class="logo"><a href="/">Rails 中文入门教程</a></p>
+				<nav class="nav-global">
+					<ul>
+						<li class="archive"><a href="/archive.html">archive</a></li>
+						<li class="page"><a href="/pages.html">pages</a></li>
+						<li class="category"><a href="/categories.html">categories</a></li>
+						<li class="tag"><a href="/tags.html">tags</a></li>
+						<li class="forkme"><iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=plusjade&repo=jekyll-bootstrap&type=fork&count=true"
+								allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe></li>
+					</ul>
+				</nav>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">Chapter 5</h1>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					<h1><a href="filling-in-the-layout#top">第五章 布局</a></h1>
+
+<p>经过简单的第四章 Ruby 语言的学习之后,我们掌握了在程序中引入布局文件的技巧，但是目前这个布局文件还是空的。在这一章节，我们将要通过使用 <em>Bootstrap</em> 框架来对自定义我们的网页布局。我们还要构建出网站中所需要元素和链接，而在这期间，我们将会学会 partial, routes , 和asset pipeline ,同时还会介绍 Sass。
+我们同时还要运用最新的Rspec技术重构第三章的测试.在本章的最后，我们将会实现第一个重要功能：用户注册.</p>
+
+<h2><a href="filling-in-the-layout#sec-structure">5.1 布局结构</a></h2>
+
+<p><em>Rails Tutorial</em> 是一本关于WEB开发的书，并非WEB设计，但是如果一整个应用程序之中都没有网页的设计将会让我们的成果显得很烂，也会让自己觉得很失败。所以我们在这一章节我们需要用上一点点的CSS技术，为了让我们能更轻松地上手使用CSS进行Web设计开发，我们使用了<a href="http://twitter.github.com/bootstrap/">Bootstrap</a>,一个又Twitter开源的web设计框架我们将会给我们的代码加上一些不同的风格，我们还要用上 partials 来然我们的布局代码显得更加简洁紧凑。</p>
+
+<p>一般来说，当你开发web应用的时候，如果事先越早从较高的层次上想好自己要写的应用越好。所以在剩下的书中，我们将会使用 <em>mockups</em> (和 <em>wireframes</em> 差不多，就是网络线框图 ), 的方法对应用进行开发。在这一章，我们主要将开发我们在 3.1 中说过的静态页面，包括网站logo，导航栏，和网站的页脚。于是我们事先已经对我们的作品作出一个 mockup 设计：
+<a href="filling-in-the-layout#fig-home_page_mockup">Figure 5.1</a>.你可以在这里看到最终结果<a href="filling-in-the-layout#fig-site_with_footer">Figure 5.7</a>.你或许会发现他们之间有着一些细节的差别--例如我们在最后加上了Rails的logo，但是没关系，Mockup 不需要太精确。</p>
+
+<p><img src="/images/figures/home_page_mockup_bootstrap.png" alt="home\_page\_mockup\_bootstrap"></p>
+
+<p>Figure 5.1: A mockup of the sample application’s Home page. <a href="http://railstutorial.org/images/figures/home_page_mockup_bootstrap-full.png">(full
+size)</a></p>
+
+<p>和平常一样，如果你使用了Git作为版本管理工具那么现在是时候开始再建立一个新的分支了：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git checkout -b filling-in-layout
+</code></pre></div>
+<h3><a href="filling-in-the-layout#sec-adding_to_the_layout">5.1.1 Site navigation</a></h3>
+
+<p>和我们在示例应用中做过的一样，我们先要更改网站的模板文件 <code>application.html.erb</code>，其中包含了你的 HTML 文件的大体框架。还有你的CSS和JS文件。全文如下：</p>
+
+<p>Listing 5.1. The site layout with added structure. \
+<code>app/views/layouts/application.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%= full_title(yield(:title)) %&gt;&lt;/title&gt;
+    &lt;%= stylesheet_link_tag    &quot;application&quot;, media: &quot;all&quot; %&gt;
+    &lt;%= javascript_include_tag &quot;application&quot; %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+    &lt;!--[if lt IE 9]&gt;
+    &lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;
+    &lt;![endif]--&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header class=&quot;navbar navbar-fixed-top navbar-inverse&quot;&gt;
+      &lt;div class=&quot;navbar-inner&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;%= link_to &quot;sample app&quot;, &#39;#&#39;, id: &quot;logo&quot; %&gt;
+          &lt;nav&gt;
+            &lt;ul class=&quot;nav pull-right&quot;&gt;
+              &lt;li&gt;&lt;%= link_to &quot;Home&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;%= link_to &quot;Help&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;%= link_to &quot;Sign in&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/nav&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;%= yield %&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+<p>这里要注意，我们用的哈希是Ruby-1.9的形式。</p>
+
+<p>例如在这里：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= stylesheet_link_tag &quot;application&quot;, :media =&gt; &quot;all&quot; %&gt;
+</code></pre></div>
+<p>被替换成了：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= stylesheet_link_tag &quot;application&quot;, media: &quot;all&quot; %&gt;
+</code></pre></div>
+<p>因为旧的哈希形式在Ruby on Rails 社区之中依然十分流行，所以认得这两种形式的哈希写法还是必须的。</p>
+
+<p>现在我们再来看看文件中的其他元素。Rails 3 默认使用了HTML5 （文档开头需要标注 <code>&lt;!DOCTYPE html&gt;</code>）；然而 HTML5 标准相对较新，有的浏览器并未全面支持（例如IE），因此我们加入一些 JavaScript 代码来作为解决方案：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!--[if lt IE 9]&gt;
+&lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;
+&lt;![endif]--&gt;
+</code></pre></div>
+<p>在这里用上了一个奇怪的语句：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!--[if lt IE 9]&gt;
+</code></pre></div>
+<p>该语句表明在关闭符号线以内的语句将在浏览器 Microsoft Internet Explorer (IE) 低于 9 (<code>if lt IE 9</code>)的时候执行。其中怪怪的语句  <code>[if lt IE 9]</code> 并不是 Rails 的一部分，它是IE浏览器支持的语法，具体看这里<a href="http://en.wikipedia.org/wiki/Conditional_comment">conditional comment</a> 。这样一来，就保证了我们只会在IE浏览器的版本低于9的时候加载我们需要的脚本文件。</p>
+
+<p>下一部分是网站的头部，包含了 logo ，还有一些用来封装内容的 div 标签，还有一个 list 元素作为导航链接页面。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;header class=&quot;navbar navbar-fixed-top navbar-inverse&quot;&gt;
+  &lt;div class=&quot;navbar-inner&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;%= link_to &quot;sample app&quot;, &#39;#&#39;, id: &quot;logo&quot; %&gt;
+      &lt;nav&gt;
+        &lt;ul class=&quot;nav pull-right&quot;&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Home&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Help&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Sign in&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+</code></pre></div>
+<p>这里的 <code>header</code> 标签指出了标签内部的元素应该位于页面的顶端。我们在  <code>header</code> 标签上标明了三个 CSS Class 分别为  <code>navbar</code>, <code>navbar-fixed-top</code>, and
+<code>navbar-inverse</code> ，</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;header class=&quot;navbar navbar-fixed-top navbar-inverse&quot;&gt;
+</code></pre></div>
+<p>所有的HTML元素都可以分配一个 id 或者多个 class，这在CSS布局中是极为常用的技巧。这三个类名是实现封装在Bootstrap前端框架中的，我们将实现在<a href="filling-in-the-layout#sec-custom_css">Section 5.1.2</a>中.</p>
+
+<p>在 <code>header</code> 标签中，我们看到两个 div 标签：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;div class=&quot;navbar-inner&quot;&gt;
+  &lt;div class=&quot;container&quot;&gt;
+</code></pre></div>
+<p>div 标签就是一个常见的分割符，它对于文档不做任何事实上的分割作用。在HTML5出现之前，几乎所有的网站的布局分割都需要div标签，现在，我们可以运用HTML5技术加入 <code>header</code>,
+<code>nav</code>, 和 <code>section</code> 元素用来更为明确地对网页文档进行分割布局。在这里，我们也为了每一个div加上了class属性，这里每一个class属性都在Bootstrap中有着特殊的意义。</p>
+
+<p>看完了div，接着就是数行内嵌的Ruby代码：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= link_to &quot;sample app&quot;, &#39;#&#39;, id: &quot;logo&quot; %&gt;
+&lt;nav&gt;
+  &lt;ul class=&quot;nav pull-right&quot;&gt;
+    &lt;li&gt;&lt;%= link_to &quot;Home&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;%= link_to &quot;Help&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;%= link_to &quot;Sign in&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+</code></pre></div>
+<p>这里使用了 Rails helper  <code>link_to</code>  来创建链接(我们曾经使用 <code>a</code> 元素来创建链接).<code>link_to</code>的第一个参数是链接的文本，而第二个是URI。我们暂时在链接的目标URI都先填上了固定链接 ‘#’ ，这在网页设计中十分常见。第三个参数，我们填上了一个id为logo的哈希。Rails helper 用这样的方式来给用户提供更加便捷的HTML选项。</p>
+
+<p>第二个div包含的元素是一个导航链接产生的list，通过 “无顺序清单” <code>ul</code> 标签和 <code>list</code> 标签 <code>li</code> 的运用即可达到效果：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;nav&gt;
+  &lt;ul class=&quot;nav pull-right&quot;&gt;
+    &lt;li&gt;&lt;%= link_to &quot;Home&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;%= link_to &quot;Help&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;%= link_to &quot;Sign in&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+</code></pre></div>
+<p>在这里，虽然 <code>nav</code> 标签好似优点多余，但是表明了块内的代码作用，并且在这里，<code>nav</code> 和 <code>pull-right</code> class 在 <code>Bootstrap</code> 中存在特殊含义。当经过Rails处理了内嵌的Ruby代码之后，这样的列表就会变成这样:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;nav&gt;
+  &lt;ul class=&quot;nav pull-right&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Help&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Sign in&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+</code></pre></div>
+<p>在整个布局文件的末尾才是主要内容的 <code>div</code>。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;div class=&quot;container&quot;&gt;
+  &lt;%= yield %&gt;
+&lt;/div&gt;
+</code></pre></div>
+<p>同样，<code>container</code> 也在Bootstrap中有着特殊意义。我们曾经在 3.3.4 中学过了 <code>yield</code> 方法可以将内容页插入布局页。页脚我们将会在 5.1.3 中加入，我们的布局页面暂时已经完成，我们已经可以通过访问首页来对其进行访问了。要想用上这个布局文件，我们还需要在 <code>home.html.erb</code> 页面之中插入一些元素：</p>
+
+<p>Listing 5.2. The Home page with a link to the signup page. \
+<code>app/views/static_pages/home.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;div class=&quot;center hero-unit&quot;&gt;
+  &lt;h1&gt;Welcome to the Sample App&lt;/h1&gt;
+
+  &lt;h2&gt;
+    This is the home page for the
+    &lt;a href=&quot;http://railstutorial.org/&quot;&gt;Ruby on Rails Tutorial&lt;/a&gt;
+    sample application.
+  &lt;/h2&gt;
+
+  &lt;%= link_to &quot;Sign up now!&quot;, &#39;#&#39;, class: &quot;btn btn-large btn-primary&quot; %&gt;
+&lt;/div&gt;
+
+&lt;%= link_to image_tag(&quot;rails.png&quot;, alt: &quot;Rails&quot;), &#39;http://rubyonrails.org/&#39; %&gt;
+</code></pre></div>
+<p>我们在这里就为第七章的用户系统做好准备，第一个 <code>link_to</code> 建立了一个固定链接。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;a href=&quot;#&quot; class=&quot;btn btn-large btn-primary&quot;&gt;Sign up now!&lt;/a&gt;
+</code></pre></div>
+<p>在这里，div标签中的 <code>hero-unit</code> 在Bootstrap中有着特殊意义的，同理对于注册按钮中的 <code>btn</code>, <code>btn-large</code>, 和 <code>btn-primary</code> 类名。</p>
+
+<p>第二个  <code>link_to</code> 中见加上了 <code>image_tag</code> helper函数，它接受的参数为图片的路径和一个可选的哈希，在这里，我们把图片链接的  <code>alt</code>  属性通过符号进行了设置，它能产生出这样的HTML代码：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;img alt=&quot;Rails&quot; src=&quot;/assets/rails.png&quot; /&gt;
+</code></pre></div>
+<p><code>alt</code> 属性的值将会当在图片不存在的时候显示，它是一种当图片无法显示时对读者补偿机制。由于人们常常漏过图片的 alt 属性，Rails 在你使用了 image_tag 函数的时候默认把图片的文件名作为其 alt 属性。在这个例子里，我们把 alt 文字值指定为 “Rails”。</p>
+
+<p>现在，我们终于可以看到我们辛苦劳动的果实。很酷，不是么？(<a href="filling-in-the-layout#fig-layout_no_logo_or_custom_css">Figure 5.2</a>).</p>
+
+<p>另外，你可能会很惊讶地发现首页上 <code>rails.png</code> 竟然确实存在。它在哪里？事实上，每一个新建的Rails应用都可以在 <code>app/assets/images/rails.png</code> 找到一张Rails的标志。因为我们实用了 <code>image_tag</code> Helper , Rails 将会通过 asset pipeline 技术自动链接到正确地地址(<a href="filling-in-the-layout#sec-sass_and_the_asset_pipeline">Section 5.2</a>).</p>
+
+<p><img src="/images/figures/layout_no_logo_or_custom_css_bootstrap.png" alt="layout\_no\_logo\_or\_custom\_css\_bootstrap"></p>
+
+<p>Figure 5.2: The Home page
+(<a href="http://localhost:3000/static_pages/home">/static_pages/home</a>) with no
+custom CSS. <a href="http://railstutorial.org/images/figures/layout_no_logo_or_custom_css_bootstrap-full.png">(full
+size)</a></p>
+
+<h3><a href="filling-in-the-layout#sec-custom_css">5.1.2 Bootstrap 自定义 CSS</a></h3>
+
+<p>在 <a href="filling-in-the-layout#sec-adding_to_the_layout">Section 5.1.1</a>中，我们将许多HTML元素设置了class，它让我们便捷地产生许多CSS效果。事实上，其中绝大多数的效果来自于<a href="http://twitter.github.com/bootstrap/">Bootstrap</a>,一个来自Twitter的网页框架，它使我们能够更加便捷地添加交互与设计网页。在这一章里，我们将会把 Bootstrap 和一些自定义CSS规则结合起来，制作自己的网站应用。</p>
+
+<p>我们首先要添加 Bootstrap,它在 Rails 应用中已经被编译成了  <code>bootstrap-sass</code> 我们可以在这里看到<a href="filling-in-the-layout#code-bootstrap_sass">Listing 5.3</a>.Bootstrap 框架最初实用的是 <a href="http://lesscss.org/">LESS CSS</a> 语言，它是一种构建动态样式表的语言。然而，Rails 的 asset pipeline 支持的是另一种(很类似)的语言 Sass，(<a href="filling-in-the-layout#sec-sass_and_the_asset_pipeline">Section 5.2</a>)。所以我们添加的是 <code>bootstrap-sass</code> 的gem ，它已经Bootstrap从LESS语言转换为SASS语言，让他能够被应用正常实用。</p>
+
+<p>Listing 5.3. Adding the <code>bootstrap-sass</code> gem to the <code>Gemfile</code>.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">source &#39;https://rubygems.org&#39;
+
+gem &#39;rails&#39;, &#39;3.2.9&#39;
+gem &#39;bootstrap-sass&#39;, &#39;2.1&#39;
+.
+.
+.
+</code></pre></div>
+<p>接下来我们运行<code>bundle install</code> 安装 Bootstrap：    </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle install
+</code></pre></div>
+<p>之后我们要重启网页服务器，一次来保证新加入的插件正常工作。(在大部分系统上，重启服务器只需要按 <code>Ctrl-C</code> 之后重新运行<code>rails server</code>. )</p>
+
+<p>要加入自定义CSS到应用程序中就是要创建一个文件包含：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">app/assets/stylesheets/custom.css.scss
+</code></pre></div>
+<p>在这里，目录和文件的名字都被加上了。目录：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">app/assets/stylesheets
+</code></pre></div>
+<p>是 asset pipeline的一部分，而在该目录下的任何一部分都会被包含在文件  <code>application.css</code> 中作为网站的布局。另外，文件 <code>custom.css.scss</code> 的名字中包含 <code>.css</code> 后缀，说明了它是一个 CSS 文件，而 <code>.scss</code> 后缀，说明了它是 “Sassy CSS” 文件以便 asset pipeline 实用 Sass 处理该文件。</p>
+
+<p>建立了自定义CSS文件之后，我们可以使用 <code>@import</code> 函数来加入 Bootstrap 如下：</p>
+
+<p>Listing 5.4. Adding Bootstrap CSS. \
+<code>app/assets/stylesheets/custom.css.scss</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@import &quot;bootstrap&quot;;
+</code></pre></div>
+<p>折一行，包含了整个Bootstrap 的 CSS 框架，结果如下：</p>
+
+<p><img src="/images/figures/sample_app_only_bootstrap.png" alt="sample\_app\_only\_bootstrap"></p>
+
+<p>Figure 5.3: The sample application with Bootstrap CSS. <a href="http://railstutorial.org/images/figures/sample_app_only_bootstrap-full.png">(full
+size)</a></p>
+
+<p>然后我们将要添加一些全站共用的CSS代码到布局文件中去。为了让自己写的代码更加清晰易懂，我们常常实用CSS注释，即在 <code>/* … */</code> 中加入注释文字。</p>
+
+<p>Listing 5.5. Adding CSS for some universal styling applying to all
+pages. \
+<code>app/assets/stylesheets/custom.css.scss</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@import &quot;bootstrap&quot;;
+
+/* universal */
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  padding-top: 60px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+</code></pre></div>
+<p><img src="/images/figures/sample_app_universal.png" alt="sample\_app\_universal"></p>
+
+<p>Figure 5.4: Adding some spacing and other universal styling. <a href="http://railstutorial.org/images/figures/sample_app_universal-full.png">(full
+size)</a></p>
+
+<p>注意<a href="filling-in-the-layout#code-universal_css">Listing 5.5</a> 中展示了一个相对固定的格式。通常来说，CSS 规则由一个class 或 id 或 html tag 或多种的组合，接着一行或者数行的样式命令，例如：</p>
+
+<p>body {
+      padding-top: 60px;
+    }</p>
+
+<p>它将设置60像素的顶部间隔长。因为 <code>navbar-fixed-top</code> 类处于  <code>header</code> tag之中，Bootstrap 将导航栏置于页面顶端，为了和正文保持距离，所以设置了正文的顶端间隔。</p>
+
+<p>此外，CSS中的这条规则</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.center {
+  text-align: center;
+}
+</code></pre></div>
+<p>同理，在这里 把 <code>center</code> 类绑定了 <code>text-align: center</code> 属性。在这里，<code>.center</code> 中的 <code>.</code>  表示匹配的是类对象(而井号 <code>#</code> 表示匹配的是 id )。这条意味着包含了<code>center</code> 类的元素将会被在置于页面的中央。 </p>
+
+<p>虽然通过 Bootsrtap 的 CSS 规则能够获得很漂亮的排版，但是我们还是要加入一些自定义规则来运用在网站和页面的布局上。</p>
+
+<p>Listing 5.6. Adding CSS for nice typography. \
+<code>app/assets/stylesheets/custom.css.scss</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@import &quot;bootstrap&quot;;
+.
+.
+.
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.7em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: #999;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+</code></pre></div>
+<p><img src="/images/figures/sample_app_typography.png" alt="sample\_app\_typography"></p>
+
+<p>Figure 5.5: Adding some typographic styling. <a href="http://railstutorial.org/images/figures/sample_app_typography-full.png">(full
+size)</a></p>
+
+<p>最后，我们为网站的 LOGO 添加几条CSS规则，还要为我们的文字 “sample app”，设置大写，颜色，位置。x</p>
+
+<p>Listing 5.7. Adding CSS for the site logo. \
+<code>app/assets/stylesheets/custom.css.scss</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@import &quot;bootstrap&quot;;
+.
+.
+.
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+</code></pre></div>
+<p>这里的  <code>color: #fff</code> 将 logo 的颜色改成白色。HTML 颜色可以用三对十六进制数表示，分别表示红，绿，蓝三色。代码 <code>#ffffff</code> 是 <code>#fff</code> 的完整形式，他们都表示纯白色。CSS 标准也允许使用很多特定名字来作为属性，<a href="http://www.w3schools.com/html/html_colornames.asp">HTML colors</a>,例如这里可以使用 <code>white</code> 来代替 <code>#fff</code>。代码产生的结果如下：<a href="filling-in-the-layout#code-logo_css">Listing 5.7</a> 
+<a href="filling-in-the-layout#fig-sample_app_logo">Figure 5.6</a>.</p>
+
+<p><img src="/images/figures/sample_app_logo.png" alt="sample\_app\_logo"></p>
+
+<p>Figure 5.6: The sample app with nicely styled logo. <a href="http://railstutorial.org/images/figures/sample_app_logo-full.png">(full
+size)</a></p>
+
+<h3><a href="filling-in-the-layout#sec-partials">5.1.3 Partials</a></h3>
+
+<p>虽然我们已经在5.1之中完成了所有布局文件的内容，但是它看起来还是有一点 cluttered .  HTML 的注释和分割代码的功能非常薄弱，整个页面的代码都必须放在一个文件里。Rails想出了一个方法来解决这个问题，叫做 <em>partials</em>. 让我们先看看经过 partials 处理之后的布局文件。</p>
+
+<p>(<a href="filling-in-the-layout#code-layout_with_partials">Listing 5.8</a>).</p>
+
+<p>Listing 5.8. The site layout with partials for the stylesheets and
+header. \
+<code>app/views/layouts/application.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%= full_title(yield(:title)) %&gt;&lt;/title&gt;
+    &lt;%= stylesheet_link_tag    &quot;application&quot;, media: &quot;all&quot; %&gt;
+    &lt;%= javascript_include_tag &quot;application&quot; %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+    &lt;%= render &#39;layouts/shim&#39; %&gt;    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;%= render &#39;layouts/header&#39; %&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;%= yield %&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+<p>我们注意到了，我们把烦人的 HTML 标注部分给换成了一个 Rails 的helper 叫 <code>render</code>: </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= render &#39;layouts/shim&#39; %&gt;
+</code></pre></div>
+<p>这句话的效果是去寻找一个文件叫做 <code>app/views/layouts/_shim.html.erb</code> ，处理文件中的内容之后吧结果插入到当前的视图文件之中。注意这里的文件名，文件名之前有一个下划线  <code>_shim.html.erb</code>; 这个下划线使我们的 partial 文件和普通的视图文件区别开来，使我们能轻易地分辨他们。</p>
+
+<p>当然为了让 partial 运作起来，我们需要向其中加上一下内容，在这个 shim partial 中，我们只需要简单的三行代码就足够了。</p>
+
+<p><a href="filling-in-the-layout#code-stylesheets_partial">Listing 5.9</a>.</p>
+
+<p>Listing 5.9. A partial for the HTML shim. \
+<code>app/views/layouts/_shim.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!--[if lt IE 9]&gt;
+&lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;
+&lt;![endif]--&gt;
+</code></pre></div>
+<p>类似地，我们可以把头部内容抽取出来放到另一个partial中，然后再加入一行 render 来调用。</p>
+
+<p>Listing 5.10. A partial for the site header. \
+<code>app/views/layouts/_header.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;header class=&quot;navbar navbar-fixed-top navbar-inverse&quot;&gt;
+  &lt;div class=&quot;navbar-inner&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;%= link_to &quot;sample app&quot;, &#39;#&#39;, id: &quot;logo&quot; %&gt;
+      &lt;nav&gt;
+        &lt;ul class=&quot;nav pull-right&quot;&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Home&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Help&quot;,    &#39;#&#39; %&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Sign in&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+</code></pre></div>
+<p>现在我们知道了 partial 是怎么回事，我们来加入一个网站的 footer 部分吧。首先我们要在layouts目录下新建一个文件叫 <code>_footer.html.erb</code>。</p>
+
+<p>(<a href="filling-in-the-layout#code-footer_partial">Listing 5.11</a>).</p>
+
+<p>Listing 5.11. A partial for the site footer. \
+<code>app/views/layouts/_footer.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;footer class=&quot;footer&quot;&gt;
+  &lt;small&gt;
+    &lt;a href=&quot;http://railstutorial.org/&quot;&gt;Rails Tutorial&lt;/a&gt;
+    by Michael Hartl
+  &lt;/small&gt;
+  &lt;nav&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;%= link_to &quot;About&quot;,   &#39;#&#39; %&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;%= link_to &quot;Contact&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://news.railstutorial.org/&quot;&gt;News&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/footer&gt;
+</code></pre></div>
+<p>和刚刚处理header的方式一样，在footer中我们使用了 <code>link_to</code> 函数来链接 About 和 Content 页面，并暂时先用 <code>&#39;#&#39;</code> 来代替目标地址，然后用同样的方法调用 render。 </p>
+
+<p>(<a href="filling-in-the-layout#code-layout_with_footer">Listing 5.12</a>).</p>
+
+<p>Listing 5.12. The site layout with a footer partial. \
+<code>app/views/layouts/application.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%= full_title(yield(:title)) %&gt;&lt;/title&gt;
+    &lt;%= stylesheet_link_tag    &quot;application&quot;, media: &quot;all&quot; %&gt;
+    &lt;%= javascript_include_tag &quot;application&quot; %&gt;
+    &lt;%= csrf_meta_tags %&gt;
+    &lt;%= render &#39;layouts/shim&#39; %&gt;    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;%= render &#39;layouts/header&#39; %&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;%= yield %&gt;
+      &lt;%= render &#39;layouts/footer&#39; %&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+<p>footer 这时候还没有样式表支持，十分地丑陋。我们现在来给它润润色。</p>
+
+<p>Listing 5.13. Adding the CSS for the site footer. \
+<code>app/assets/stylesheets/custom.css.scss</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.
+.
+.
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #999;
+}
+
+footer a {
+  color: #555;
+}  
+
+footer a:hover { 
+  color: #222;
+}
+
+footer small {
+  float: left;
+}
+
+footer ul {
+  float: right;
+  list-style: none;
+}
+
+footer ul li {
+  float: left;
+  margin-left: 10px;
+}
+</code></pre></div>
+<p><img src="/images/figures/site_with_footer_bootstrap.png" alt="site\_with\_footer\_bootstrap"></p>
+
+<p>Figure 5.7: The Home page
+(<a href="http://localhost:3000/static_pages/home">/static_pages/home</a>) 加上footer. <a href="http://railstutorial.org/images/figures/site_with_footer_bootstrap-full.png">(full
+size)</a></p>
+
+<h2><a href="filling-in-the-layout#sec-sass_and_the_asset_pipeline">5.2 Sass 和 Asset pipeline</a></h2>
+
+<p>Rails 3.0 和 当前版本的Rails 最引人关注的区别就是新版加入了 asset pipeline，显著地提升了管理例如 CSS  Javascript ，图片等静态资源的能力。在这一部分我们会大致地介绍 asset pipeline和其默认使用的 SASS 这个神奇的 CSS 工具。</p>
+
+<h3><a href="filling-in-the-layout#sec-the_asset_pipeline">5.2.1 Asset Pipeline</a></h3>
+
+<p>Asset Pipeline 的出现让Rails的内部结构改变了很多，但是从一个Rails开发人员的角度上来说，主要是有三个新增特性： asset 目录，文件清单，和预处理引擎。我们会依次介绍。</p>
+
+<h4><a href="filling-in-the-layout#sec-5_2_1_1">Asset 目录</a></h4>
+
+<p>在Rails 3.0 之前( 包括 3.0 )，静态资源都放在  <code>public/</code> 目录之下，包括了</p>
+
+<ul>
+<li>  <code>public/stylesheets</code></li>
+<li>  <code>public/javascripts</code></li>
+<li>  <code>public/images</code></li>
+</ul>
+
+<p>该目录下的资源将能够被例如 http://example.com/stylesheets  的路径访问到。</p>
+
+<p>而从 Rails 3.1 开始，将有三个目录来放置静态资源，但是他们又有一些分别：</p>
+
+<ul>
+<li>  <code>app/assets</code>: 应用程序所需静态资源 </li>
+<li>  <code>lib/assets</code>: 为你自己程序所写的程序库静态资源</li>
+<li>  <code>vendor/assets</code>: 第三方插件的静态资源 </li>
+</ul>
+
+<p>你可能可以猜到，每个的目录下面都有三个资源类目录：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ ls app/assets/
+images      javascripts stylesheets
+</code></pre></div>
+<p>这是我们就理解了为什么当时我们要把 <code>custom.css.scss</code> 放置在<code>app/assets/stylesheets</code> 的原因了吧。</p>
+
+<h4><a href="filling-in-the-layout#sec-5_2_1_2">清单文件与管理静态资源</a></h4>
+
+<p>一旦你把你的静态资源布置到了指定的位置上之后，你只需要一个清单文件(通过<a href="https://github.com/sstephenson/sprockets">Sprockets</a>这个gem)来告诉 Rails 到底如何把多个文件组合成单个文件。例如，我们可以看一下app目录下的样式表清单文件。</p>
+
+<p>(<a href="filling-in-the-layout#code-app_css_manifest">Listing 5.14</a>).</p>
+
+<p>Listing 5.14. The manifest file for app-specific CSS. \
+<code>app/assets/stylesheets/application.css</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">/*
+ * This is a manifest file that&#39;ll automatically include all the stylesheets
+ * available in this directory and any sub-directories. You&#39;re free to add
+ * application-wide styles to this file and they&#39;ll appear at the top of the
+ * compiled file, but it&#39;s generally better to create a new file per style 
+ * scope.
+ *= require_self
+ *= require_tree . 
+*/
+</code></pre></div>
+<p>以下一行虽然是CSS的注释，但是它们却会被Sprockets处理，把对应文件引入。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">/*
+ .
+ .
+ .
+ *= require_self
+ *= require_tree . 
+*/
+</code></pre></div>
+<p>这里</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">*= require_tree .
+</code></pre></div>
+<p>保证了所有 <code>app/assets/stylesheets</code> 目录下的 CSS 文件都被引入到应用中去。
+而</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">*= require_self
+</code></pre></div>
+<p>这一行保证了 <code>application.css</code>  文件本身也被引入。</p>
+
+<p>Rails 应用新建的时候就有一个默认的清单文件，而在本教程中我们不需要做任何的更改，你可以在 <a href="http://guides.rubyonrails.org/asset_pipeline.html">Rails Guides entry on the asset pipeline</a> 中找到更多的信息。</p>
+
+<h4><a href="filling-in-the-layout#sec-5_2_1_3">文件预处理</a></h4>
+
+<p>当你把你的静态文件准备妥当之后，Rails会根据你的文件清单进行预处理，之后通过Rails服务器传送给浏览器。文件的后缀指示出Rails要用什么如何处理对应的文件。例如使用Sass来处理  <code>.scss</code> 后缀，用CoffeeScript处理 <code>.coffee</code> ，用 Ruby 自带的 ERb 插件处理 <code>.erb</code> 文件。ERb和Sass我们都在前文提到过，本教程中我们不会使用 CoffeScript，但是这是一个轻量而优雅的 Javascript 编译语言(建议从<a href="http://railscasts.com/episodes/267-coffeescript-basics">RailsCast on CoffeeScript basics</a>开始CoffeeScript的学习)。</p>
+
+<p>预处理可以通过后缀的链接而依次执行，例如</p>
+
+<p><code>foobar.js.coffee</code></p>
+
+<p>将运行 CoffeeScript 处理器，而</p>
+
+<p><code>foobar.js.erb.coffee</code></p>
+
+<p>将运行CoffeeScript 处理器之后再执行 ERb 处理。</p>
+
+<h4><a href="filling-in-the-layout#sec-5_2_1_4">高效的生产模式</a></h4>
+
+<p>asset pipeline 中最棒的事情就是其能够在生产模式中大大优化服务器的效率。传统的服务器是将 CSS 和 JavaScript 逐文件地传送至浏览器上。虽然这样便于开发，但是却大大增加客户端的载入时间(客户的交互速度是应用设计重要环节)。然而通过 asset pipeline ,在生产模式中所有应用的样式表和脚本代码将会分别合并压缩成单个文件(<code>application.css</code>和`javascripts.js),并且排除掉页面上无需载入的文件，大大方便了编程人员，也加速了页面的访问速度。</p>
+
+<h3><a href="filling-in-the-layout#sec-sass">5.2.2 强化语法样式表</a></h3>
+
+<p><em>Sass</em>  是一种为了改善CSS语言而存在的工具。在这一节，我们将会对CSS进行两项重要的优化，为CSS加上 <em>nesting</em> 和 变量。(我们还会在 <a href="sign-up#sec-rails_environments">Section 7.1.1</a>加上第三个技术 <em>mixins</em>).</p>
+
+<p>我们曾经在<a href="filling-in-the-layout#sec-custom_css">Section 5.1.2</a>中提到，Sass支持SCSS格式的文件(用 <code>.scss</code> 当作后缀)，该技术完全对CSS兼容————这意味着你完全可以在一个scss文件中写满css语法.最初，我们是因为Bootstrap中要用上SASS，而事实上，Rails 的asset pipeline 支持Sass的处理，Rails会自动地识别scss后缀的文件，并使用SASS软件进行预处理。</p>
+
+<h4><a href="filling-in-the-layout#sec-5_2_2_1">Nesting</a></h4>
+
+<p>一种样式表中常见的形式就是内嵌。例如在下面我们把<code>.center h1</code> 表示存在于 <code>.center</code> 的属性中。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+</code></pre></div>
+<p>在Sass 中，我们可以这么表示：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.center {
+  text-align: center;
+  h1 {
+    margin-bottom: 10px;
+  }  
+}
+</code></pre></div>
+<p>这里的 <code>h1</code> 就将自动继承上文的 <code>.center</code> 。</p>
+
+<p>还有另外一个例子：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+</code></pre></div>
+<p>这里id为 <code>#logo</code> 的元素出现了两次，一次是定义自己的属性，另一次是定义其 <code>hover</code> 状态的属性。在SCSS文件中，我们就可以运用 <code>&amp;</code> 更优雅地表达我们的语句：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+  &amp;:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+</code></pre></div>
+<p>Sass在进行处理的时候会把 把<code>&amp;:hover</code> 转换为 <code>#logo:hover</code> 的CSS语法。</p>
+
+<p>我们再把这两种nesting技巧运用到我们footer段的CSS文件中，把它改写成这样：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #999;
+  a {
+    color: #555;
+    &amp;:hover { 
+      color: #222;
+    }
+  }  
+  small { 
+    float: left; 
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+  }
+}
+</code></pre></div>
+<p>这段代码是一个好很的练习机会，改写后你会发现页面并没有出现改变。</p>
+
+<h4><a href="filling-in-the-layout#sec-5_2_2_2">变量</a></h4>
+
+<p>Sass 可以让我们可以使用变量来减少重复的表达式代码。如下，我们出现了一个语句的重复</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">h2 {
+  .
+  .
+  .
+  color: #999;
+}
+.
+.
+.
+footer {
+  .
+  .
+  .
+  color: #999;
+}
+</code></pre></div>
+<p>在这里  <code>#999</code>  是亮灰色，我们可以给它一个一个变量名：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$lightGray: #999;
+</code></pre></div>
+<p>现在我们可以这么撰写SCSS文件：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$lightGray: #999;
+.
+.
+.
+h2 {
+  .
+  .
+  .
+  color: $lightGray;
+}
+.
+.
+.
+footer {
+  .
+  .
+  .
+  color: $lightGray;
+}
+</code></pre></div>
+<p>变量名 <code>$lightGray</code>，比原本的 <code>#999</code> 显得更加简单易懂，这种技巧常常运用在一块代码中出现了多次重复的表达式时。事实上，Bootstrap框架已经定义了很多种的颜色，公布在网上， <a href="http://bootstrapdocs.com/v2.0.4/docs/less.html">Bootstrap中的LESS</a>，这里定义的时候用的是LESS语法，但是我们加入了 <code>bootstrap-sass</code> gem之后，同样的变量也被移植了过来。看出来其和Sass的对应关系应该不是什么难事，Less在 &quot;@&quot; 符号的地方用 &quot;at&quot; , Sass使用美元符号 <code>$</code>.看Bootstrap的变量，我们发现有一行定义：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@grayLight: #999;
+</code></pre></div>
+<p>这意味着，在使用了 <code>bootstrap-sass</code> gem 的Rails应用中，我们直接写上<code>$lightGray</code>就可以获得所需要的功能：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">h2 {
+  .
+  .
+  .
+  color: $grayLight;
+}
+.
+.
+.
+footer {
+  .
+  .
+  .
+  color: $grayLight;
+}
+</code></pre></div>
+<p>应用上Sass的技巧之后我们整个SCSS文件变成了这样。</p>
+
+<p>Listing 5.15. The initial SCSS file converted to use nesting and
+variables. \
+<code>app/assets/stylesheets/custom.css.scss</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@import &quot;bootstrap&quot;;
+
+/* mixins, variables, etc. */
+
+$grayMediumLight: #eaeaea;
+
+/* universal */
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  padding-top: 60px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+  h1 {
+    margin-bottom: 10px;
+  }
+}
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.7em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: $grayLight;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+  &amp;:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $grayMediumLight;
+  color: $grayLight;
+  a {
+    color: $gray;
+    &amp;:hover { 
+      color: $grayDarker;
+    }
+  }  
+  small { 
+    float: left; 
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+  }
+}
+</code></pre></div>
+<p>Sass给了我们简化样式表的手段，但是这只是Sass强大功能的冰山一角，如果你有兴趣，可以参照 <a href="http://sass-lang.com/">Sass website</a> 获取更多信息。</p>
+
+<h2><a href="filling-in-the-layout#sec-layout_links">5.3 Layout 链接</a></h2>
+
+<p>我们已经完成了网站的布局样式代码，现在是时候让我们把原本预留的 <code>’#’</code> 链接替换成其他的链接了。当然，我们可以用这样的硬编码来实现</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;a href=&quot;/static_pages/about&quot;&gt;About&lt;/a&gt;
+</code></pre></div>
+<p>但是这就没有 Rails 的感觉了。一般来说，对于URI，使用 /about 会比 /static_pages/about 更好一点，在Rails 中，Rails 通常使用  <em>named routes</em> ，代码看起来可能像这样：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= link_to &quot;About&quot;, about_path %&gt;
+</code></pre></div>
+<p>这样的代码能够更加明确地说明代码含义，并且可移植性更强。</p>
+
+<p>下面这个列表是我们准备在首页上实现的所有URI链接和路由配置,我们将会依次实现它们。</p>
+
+<p><strong>Page</strong>   <strong>URI</strong>    <strong>Named route</strong></p>
+
+<hr>
+
+<p>Home       /          <code>root_path</code>
+  About      /about     <code>about_path</code>
+  Help       /help      <code>help_path</code>
+  Contact    /contact   <code>contact_path</code>
+  Sign up    /signup    <code>signup_path</code>
+  Sign in    /signin    <code>signin_path</code></p>
+
+<p>Table 5.1: Route and URI mapping for site links.</p>
+
+<p>首先，我们先加入一个内容页面，在这之前我们要先写测试代码。</p>
+
+<p>Listing 5.16. Tests for a Contact page. \
+<code>spec/requests/static_pages_spec.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">require &#39;spec_helper&#39;
+
+describe &quot;Static pages&quot; do
+  .
+  .
+  .
+  describe &quot;Contact page&quot; do
+
+    it &quot;should have the h1 &#39;Contact&#39;&quot; do
+      visit &#39;/static_pages/contact&#39;
+      page.should have_selector(&#39;h1&#39;, text: &#39;Contact&#39;)
+    end
+
+    it &quot;should have the title &#39;Contact&#39;&quot; do
+      visit &#39;/static_pages/contact&#39;
+      page.should have_selector(&#39;title&#39;,
+                    text: &quot;Ruby on Rails Tutorial Sample App | Contact&quot;)
+    end
+  end
+end
+</code></pre></div>
+<p>我们可以进行测试，它很理所应当地失败了。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/static_pages_spec.rb
+</code></pre></div>
+<p>之后，我们为我们加上路由配置，我们为 StaticPages 控制器加上了一个<code>contact</code> 行为，最后我们新建了一个 Contact 的视图。</p>
+
+<p>Listing 5.17. Adding a route for the Contact page. \
+<code>config/routes.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SampleApp::Application.routes.draw do
+  get &quot;static_pages/home&quot;
+  get &quot;static_pages/help&quot;
+  get &quot;static_pages/about&quot;
+  get &quot;static_pages/contact&quot;
+  .
+  .
+  .
+end
+</code></pre></div>
+<p>Listing 5.18. Adding an action for the Contact page. \
+<code>app/controllers/static_pages_controller.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">class StaticPagesController &lt; ApplicationController
+  .
+  .
+  .
+  def contact
+  end
+end
+</code></pre></div>
+<p>Listing 5.19. The view for the Contact page. \
+<code>app/views/static_pages/contact.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;% provide(:title, &#39;Contact&#39;) %&gt;
+&lt;h1&gt;Contact&lt;/h1&gt;
+&lt;p&gt;
+  Contact Ruby on Rails Tutorial about the sample app at the
+  &lt;a href=&quot;http://railstutorial.org/contact&quot;&gt;contact page&lt;/a&gt;.
+&lt;/p&gt;
+</code></pre></div>
+<p>现在那个测试应该是通过了。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/static_pages_spec.rb
+</code></pre></div>
+<h3><a href="filling-in-the-layout#sec-route_tests">5.3.1 路由测试</a></h3>
+
+<p>我们现在已经成功地完成了静态页面的测试，下一步是测试路由的正常运作。撰写一个路由测试很简单：我们只要把每一个硬编码的路由路径改为命名路由路径即可，例如我们把</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">visit &#39;/static_pages/about&#39;
+</code></pre></div>
+<p>改为</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">visit about_path
+</code></pre></div>
+<p>其他的页面也类似，最后页面样式这样：</p>
+
+<p>Listing 5.20. Tests for the named routes. \
+<code>spec/requests/static_pages_spec.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">require &#39;spec_helper&#39;
+
+describe &quot;Static pages&quot; do
+
+  describe &quot;Home page&quot; do
+
+    it &quot;should have the h1 &#39;Sample App&#39;&quot; do
+      visit root_path
+      page.should have_selector(&#39;h1&#39;, text: &#39;Sample App&#39;)
+    end
+
+    it &quot;should have the base title&quot; do
+      visit root_path
+      page.should have_selector(&#39;title&#39;,
+                        text: &quot;Ruby on Rails Tutorial Sample App&quot;)
+    end
+
+    it &quot;should not have a custom page title&quot; do
+      visit root_path
+      page.should_not have_selector(&#39;title&#39;, text: &#39;| Home&#39;)
+    end
+  end
+
+  describe &quot;Help page&quot; do
+
+    it &quot;should have the h1 &#39;Help&#39;&quot; do
+      visit help_path
+      page.should have_selector(&#39;h1&#39;, text: &#39;Help&#39;)
+    end
+
+    it &quot;should have the title &#39;Help&#39;&quot; do
+      visit help_path
+      page.should have_selector(&#39;title&#39;,
+                        text: &quot;Ruby on Rails Tutorial Sample App | Help&quot;)
+    end
+  end
+
+  describe &quot;About page&quot; do
+
+    it &quot;should have the h1 &#39;About&#39;&quot; do
+      visit about_path
+      page.should have_selector(&#39;h1&#39;, text: &#39;About Us&#39;)
+    end
+
+    it &quot;should have the title &#39;About Us&#39;&quot; do
+      visit about_path
+      page.should have_selector(&#39;title&#39;,
+                    text: &quot;Ruby on Rails Tutorial Sample App | About Us&quot;)
+    end
+  end
+
+  describe &quot;Contact page&quot; do
+
+    it &quot;should have the h1 &#39;Contact&#39;&quot; do
+      visit contact_path
+      page.should have_selector(&#39;h1&#39;, text: &#39;Contact&#39;)
+    end
+
+    it &quot;should have the title &#39;Contact&#39;&quot; do
+      visit contact_path
+      page.should have_selector(&#39;title&#39;,
+                    text: &quot;Ruby on Rails Tutorial Sample App | Contact&quot;)
+    end
+  end
+end
+</code></pre></div>
+<p>和往常一样，我们先看看我们错误百出的测试。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/static_pages_spec.rb
+</code></pre></div>
+<p>如果你觉得文中的代码反复而冗长，别担心，你不是唯一这么想的人，我们很快就会对该页面进行改进的。</p>
+
+<h3><a href="filling-in-the-layout#sec-rails_routes">5.3.2 Rails 路由</a></h3>
+
+<p>现在我们已经如我们所愿测试了URI，是时候让它们跑起来看看了。另外提一句，我们在打开 <code>config/routes.rb</code> 文件的时候我们看到了默认路由中密密麻麻的注释代码，事实上，这些被注释的代码是对Rails路由语法的一种示例，你可以在这里<a href="http://guides.rubyonrails.org/routing.html">Rails Guides article “Rails Routing from the outside in”</a>找到关于Rails路由的更多信息。</p>
+
+<p>要定义一个命名路由，我们首先要把get规则替换成match规则</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">get &#39;static_pages/help&#39;
+</code></pre></div>
+<p>改成</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">match &#39;/help&#39;, to: &#39;static_pages#help&#39;
+</code></pre></div>
+<p>这样让  <code>/help</code> 和命名路由 <code>help_path</code> 都将能返回我们所需要的路径。在这里，get 和 match 其实结果都是一样的，但是实用 match 会更方便一点。</p>
+
+<p>我们只有在 Home 页面中使用静态的路由配置.</p>
+
+<p>Listing 5.21. Routes for static pages. \
+<code>config/routes.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SampleApp::Application.routes.draw do
+  match &#39;/help&#39;,    to: &#39;static_pages#help&#39;
+  match &#39;/about&#39;,   to: &#39;static_pages#about&#39;
+  match &#39;/contact&#39;, to: &#39;static_pages#contact&#39;
+  .
+  .
+  .
+end
+</code></pre></div>
+<p>如果你仔细地阅读了上面的代码，你一定能明白它说的是什么意思。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">match &#39;/about&#39;, to: &#39;static_pages#about&#39;
+</code></pre></div>
+<p>这里将匹配 &#39;/about&#39; 路径到 StaticPages 控制器 下的 <code>about</code> 方法。之前，我们用了更易懂的方法来处理： </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">get &#39;static_pages/about&#39;
+</code></pre></div>
+<p>这其实是同样的意思，但是 <code>/about</code> 显得更简洁一点。正如上文所提到的。 <code>match ’/about’</code> 同样为控制器和视图产生了命名路由：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">about_path =&gt; &#39;/about&#39;
+about_url  =&gt; &#39;http://localhost:3000/about&#39;
+</code></pre></div>
+<p>注意，<code>about_url</code> 生成的是完整的 URI 地址  http://localhost:3000/about。（在部署的时候，<code>localhost:3000</code> 会被替换成域名，例如 <code>example.com</code> 。）正如我们在<a href="filling-in-the-layout#sec-layout_links">Section 5.3</a>中讨论的那样，要访问/about,你可以用 <code>about_path</code> 。在  <em>Rails Tutorial</em> 中，通常使用 <code>path</code>。然而当我们我们需要进行重定向的时候，我们将需要完整的 HTTP 地址，这时候我们将会用 <code>url</code> 后缀的格式，事实上，大部分浏览器这两种格式都是支持的。</p>
+
+<p>路由定义好了之后，我们可以开始测试 Help, About,Contact 页面了：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/static_pages_spec.rb
+</code></pre></div>
+<p>这时候应该只有 Home 页面还是处于fail状态。</p>
+
+<p>要建立路由的Home页面，我们可以用这样的代码：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">match &#39;/&#39;, to: &#39;static_pages#home&#39;
+</code></pre></div>
+<p>然而这是没有必要的，因为在Rails中存在一个特殊的指令来表示 URI / 表示文件的最底层。</p>
+
+<p>Listing 5.22. The commented-out hint for defining the root route. \
+<code>config/routes.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SampleApp::Application.routes.draw do
+  .
+  .
+  .
+  # You can have the root of your site routed with &quot;root&quot;
+  # just remember to delete public/index.html.
+  # root :to =&gt; &quot;welcome#index&quot;
+  .
+  .
+  .
+end
+</code></pre></div>
+<p>Using <a href="filling-in-the-layout#code-root_route_hint">Listing 5.22</a> as a
+model, we arrive at
+<a href="filling-in-the-layout#code-root_route">Listing 5.23</a> to route the root
+URI / to the Home page.</p>
+
+<p>Listing 5.23. Adding a mapping for the root route. \
+<code>config/routes.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SampleApp::Application.routes.draw do
+  root to: &#39;static_pages#home&#39;
+
+  match &#39;/help&#39;,    to: &#39;static_pages#help&#39;
+  match &#39;/about&#39;,   to: &#39;static_pages#about&#39;
+  match &#39;/contact&#39;, to: &#39;static_pages#contact&#39;  
+  .
+  .
+  .
+end
+</code></pre></div>
+<p>这代码将根URI / 映射到  /static_pages/home，并且建立这样的Helper函数：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">root_path =&gt; &#39;/&#39;
+root_url  =&gt; &#39;http://localhost:3000/&#39;
+</code></pre></div>
+<p>这里我们需要留心提到过的<a href="filling-in-the-layout#code-root_route_hint">Listing 5.22</a> 中删除 <code>public/index.html</code> 文件的问题。
+删除了之后，如果你有用 git 进行代码管理，还需要运行：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git rm public/index.html
+</code></pre></div>
+<p>来保证 git 删除了该文件。我们曾经在<a href="beginning#sec-git_commands">Section 1.3.5</a>提到过了git的基本命令， 我们使用了Git命令   <code>git commit -a -m &quot;Message&quot;</code> 其中-a为 ”all changes “， -m 为message。作为缩写，Git 支持把两个标签缩写成一个，变成 <code>git commit -am &quot;Message&quot;</code>。</p>
+
+<p>现在，所有的路由设置与静态页面都已经完成了，现在的测试就会通过：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/static_pages_spec.rb
+</code></pre></div>
+<p>现在我们只是需要把链接写入布局文件中就可以了。</p>
+
+<h3><a href="filling-in-the-layout#sec-named_routes">5.3.3 命名路由</a></h3>
+
+<p>让我们在把<a href="filling-in-the-layout#sec-rails_routes">Section 5.3.2</a> 中写好的路由名称填到布局文件中来。我们只要把对应的路由命填到 <code>link_to</code>  的第二个参数中就可以了，例如，我们把</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= link_to &quot;About&quot;, &#39;#&#39; %&gt;
+</code></pre></div>
+<p>改成</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;%= link_to &quot;About&quot;, about_path %&gt;
+</code></pre></div>
+<p>就好。</p>
+
+<p>我们从 header partial 开始，<code>_header.html.erb</code> 中有着 Home 和 Help 页面的链接，我们对他们作一些修改:</p>
+
+<p>Listing 5.24. Header partial with links. \
+<code>app/views/layouts/_header.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;header class=&quot;navbar navbar-fixed-top navbar-inverse&quot;&gt;
+  &lt;div class=&quot;navbar-inner&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;%= link_to &quot;sample app&quot;, root_path, id: &quot;logo&quot; %&gt;
+      &lt;nav&gt;
+        &lt;ul class=&quot;nav pull-right&quot;&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Home&quot;,    root_path %&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Help&quot;,    help_path %&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;%= link_to &quot;Sign in&quot;, &#39;#&#39; %&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+</code></pre></div>
+<p>我们在第八章才会开始制作登录界面，所以我们先留一个 <code>’#’</code> 在这里。</p>
+
+<p>而在 footer partial文件中， <code>_footer.html.erb</code>,我们需要修改 About 和 Contact 页面。</p>
+
+<p>Listing 5.25. Footer partial with links. \
+<code>app/views/layouts/_footer.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;footer class=&quot;footer&quot;&gt;
+  &lt;small&gt;
+    &lt;a href=&quot;http://railstutorial.org/&quot;&gt;Rails Tutorial&lt;/a&gt;
+    by Michael Hartl
+  &lt;/small&gt;
+  &lt;nav&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;%= link_to &quot;About&quot;,   about_path %&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;%= link_to &quot;Contact&quot;, contact_path %&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://news.railstutorial.org/&quot;&gt;News&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/footer&gt;
+</code></pre></div>
+<p>此时，我们已经把页面文件中所有的静态页面链接上了。</p>
+
+<p>另外，值得一提的是，一旦填上了对应的Helper名，测试就会自动检测是否存在对应的路由定义。</p>
+
+<p><img src="/images/figures/about_page_styled.png" alt="about\_page\_styled"></p>
+
+<p>Figure 5.8: The About page at
+<a href="http://localhost:3000/about">/about</a>. <a href="http://railstutorial.org/images/figures/about_page_styled-full.png">(full
+size)</a></p>
+
+<h3><a href="filling-in-the-layout#sec-pretty_rspec">5.3.4 为RSpec锦上添花</a></h3>
+
+<p>我们注意到在 <a href="filling-in-the-layout#sec-route_tests">Section 5.3.1</a> 中，我们的测试文件有一些冗长和重复。在这一节里，我们将会用上 Rspec 的新特性来让代码显得更优雅。</p>
+
+<p>先关注一下我们原本的代码是怎么样的：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">describe &quot;Home page&quot; do
+
+  it &quot;should have the h1 &#39;Sample App&#39;&quot; do
+    visit root_path
+    page.should have_selector(&#39;h1&#39;, text: &#39;Sample App&#39;)
+  end
+
+  it &quot;should have the base title&quot; do
+    visit root_path
+    page.should have_selector(&#39;title&#39;,
+                      text: &quot;Ruby on Rails Tutorial Sample App&quot;)
+  end
+
+  it &quot;should not have a custom page title&quot; do
+    visit root_path
+    page.should_not have_selector(&#39;title&#39;, text: &#39;| Home&#39;)
+  end
+end
+</code></pre></div>
+<p>首先被注意到的是所有的例子都包含了一个 visit 到 root path 的属性。我们可以通过使  用 <code>before</code> 代码块来处理它：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">describe &quot;Home page&quot; do
+  before { visit root_path } 
+
+  it &quot;should have the h1 &#39;Sample App&#39;&quot; do
+    page.should have_selector(&#39;h1&#39;, text: &#39;Sample App&#39;)
+  end
+
+  it &quot;should have the base title&quot; do
+    page.should have_selector(&#39;title&#39;,
+                      text: &quot;Ruby on Rails Tutorial Sample App&quot;)
+  end
+
+  it &quot;should not have a custom page title&quot; do
+    page.should_not have_selector(&#39;title&#39;, text: &#39;| Home&#39;)
+  end
+end
+</code></pre></div>
+<p>这里我们修改了这一行</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">before { visit root_path }
+</code></pre></div>
+<p>这样保证了每一个测试都是在访问 root path.</p>
+
+<p>另一个重复代码是</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">it &quot;should have the h1 &#39;Sample App&#39;&quot; do
+</code></pre></div>
+<p>和</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">page.should have_selector(&#39;h1&#39;, text: &#39;Sample App&#39;)
+</code></pre></div>
+<p>这两个表达的其实是一样的事情。这里我们注意到，每个测试都引用了<code>page</code>变量，我们可以运用 Rspec 的  <em>subject</em>  语法来消除这一冗余。</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">subject { page }
+</code></pre></div>
+<p>并且在单行的 it 语法中，我们使用闭合式的代码块表示：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">it { should have_selector(&#39;h1&#39;, text: &#39;Sample App&#39;) }
+</code></pre></div>
+<p>因为我们申明了 <code>subject { page }</code>，所以调用 <code>should</code> 时 Capybara 会自动帮你选择使用page变量。</p>
+
+<p>现在，Home 页面的测试代码显得更加紧凑和优雅了：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">  subject { page }
+
+  describe &quot;Home page&quot; do
+    before { visit root_path } 
+
+    it { should have_selector(&#39;h1&#39;, text: &#39;Sample App&#39;) }
+    it { should have_selector &#39;title&#39;,
+                        text: &quot;Ruby on Rails Tutorial Sample App&quot; }
+    it { should_not have_selector &#39;title&#39;, text: &#39;| Home&#39; }
+  end
+</code></pre></div>
+<p>这样的代码看起来好多了。但是测试的标题看起来还是长了一点，事实上，在每一个测试的开头都有一行这样的长标题：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&quot;Ruby on Rails Tutorial Sample App | About&quot;
+</code></pre></div>
+<p>在 <a href="static-pages#sec-static_pages_exercises">Section 3.5</a> 的练习中，我们试着定义一个 <code>base_title</code> 变量来消除重复的标题字符串。现在，我们有更好的办法：定义一个 <code>full_title</code> 函数。为此，我们需要建立 <code>spec/support</code> 文件夹和 <code>utilities.rb</code>  文件。</p>
+
+<p>Listing 5.26. A file for RSpec utilities with a <code>full_title</code> function. \
+<code>spec/support/utilities.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">def full_title(page_title)
+  base_title = &quot;Ruby on Rails Tutorial Sample App&quot;
+  if page_title.empty?
+    base_title
+  else
+    &quot;#{base_title} | #{page_title}&quot;
+  end
+end
+</code></pre></div>
+<p>其实，这函数本质上还是我们在<a href="rails-flavored-ruby#code-title_helper">Listing 4.2</a>中写的那个。但是两个独立的函数允许我们更加自由地组织我们的标题。这是一种很奇怪的设计，而更好的方法我们会在测试(<a href="filling-in-the-layout#sec-layout_exercises">Section 5.6</a>)给出。</p>
+
+<p>在  <code>spec/support</code>  目录下的文件夹默认包括了 RSpec，这意味着我们可以在写 Home 页面测试可以这样：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">  subject { page }
+
+  describe &quot;Home page&quot; do
+    before { visit root_path } 
+
+    it { should have_selector(&#39;h1&#39;,    text: &#39;Sample App&#39;) }
+    it { should have_selector(&#39;title&#39;, text: full_title(&#39;&#39;)) }
+  end
+</code></pre></div>
+<p>这样我们就可以轻松地对 Home 页面照葫芦花瓢，写出我们的 Help, About, 和 Contact 页面。结果如下</p>
+
+<p>Listing 5.27. Prettier tests for the static pages. \
+<code>spec/requests/static_pages_spec.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">require &#39;spec_helper&#39;
+
+describe &quot;Static pages&quot; do
+
+  subject { page }
+
+  describe &quot;Home page&quot; do
+    before { visit root_path }
+
+    it { should have_selector(&#39;h1&#39;,    text: &#39;Sample App&#39;) }
+    it { should have_selector(&#39;title&#39;, text: full_title(&#39;&#39;)) }
+    it { should_not have_selector &#39;title&#39;, text: &#39;| Home&#39; }
+  end
+
+  describe &quot;Help page&quot; do
+    before { visit help_path }
+
+    it { should have_selector(&#39;h1&#39;,    text: &#39;Help&#39;) }
+    it { should have_selector(&#39;title&#39;, text: full_title(&#39;Help&#39;)) }
+  end
+
+  describe &quot;About page&quot; do
+    before { visit about_path }
+
+    it { should have_selector(&#39;h1&#39;,    text: &#39;About&#39;) }
+    it { should have_selector(&#39;title&#39;, text: full_title(&#39;About Us&#39;)) }
+  end
+
+  describe &quot;Contact page&quot; do
+    before { visit contact_path }
+
+    it { should have_selector(&#39;h1&#39;,    text: &#39;Contact&#39;) }
+    it { should have_selector(&#39;title&#39;, text: full_title(&#39;Contact&#39;)) }
+  end
+end
+</code></pre></div>
+<p>好了，我们现在可以进行测试，修改你的代码知道让他们全部通过：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/static_pages_spec.rb
+</code></pre></div>
+<h2><a href="filling-in-the-layout#sec-user_signup">5.4 新的开始：用户注册</a></h2>
+
+<p>有了完整的 Rails 页面布局与路由作为一个基础，在这一章，我们要开始写用户注册界面，着意味着我们需要一个新的控制器。用户注册是用户在网站中的入口，是交互中极其重要的一环，在这一章我们会作出控制器，在下一章，我们会完成用户模型的搭建，我们会在第七章完成注册页面的工作。</p>
+
+<h3><a href="filling-in-the-layout#sec-users_controller">5.4.1 用户控制器</a></h3>
+
+<p>上一个控制器似乎已经是非常遥远的事情了，StaticPages controller，要追溯到<a href="static-pages#sec-static_pages_with_rails">Section 3.1.2</a>，是时候新建一个新控制器了： User controller .  和原来一样，我们需要运行 <code>generate</code> 命令来创建用户注册控制器的基础框架。根据我们之前提到的 <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">REST 架构</a> ，我们要建立一个 建立用户的行为 <code>new</code>， 我们可以把 new 作为一个参数传给  <code>generate controller</code> 命令。</p>
+
+<p>Listing 5.28. Generating a Users controller (with a <code>new</code> action).</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ rails generate controller Users new --no-test-framework
+      create  app/controllers/users_controller.rb
+       route  get &quot;users/new&quot;
+      invoke  erb
+      create    app/views/users
+      create    app/views/users/new.html.erb
+      invoke  helper
+      create    app/helpers/users_helper.rb
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/users.js.coffee
+      invoke    scss
+      create      app/assets/stylesheets/users.css.scss
+</code></pre></div>
+<p>这样，我们就创建了一个包含new行为的用户控制器，同时还新建了一个简单用户页面：</p>
+
+<p>Listing 5.29. The initial Users controller, with a <code>new</code> action. \
+<code>app/controllers/users_controller.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">class UsersController &lt; ApplicationController
+  def new
+  end
+
+end
+</code></pre></div>
+<p>Listing 5.30. The initial <code>new</code> action for Users. \
+<code>app/views/users/new.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;h1&gt;Users#new&lt;/h1&gt;
+&lt;p&gt;Find me in app/views/users/new.html.erb&lt;/p&gt;
+</code></pre></div>
+<h3><a href="filling-in-the-layout#sec-signup_url">5.4.2 注册 URI</a></h3>
+
+<p>完成了<a href="filling-in-the-layout#sec-users_controller">Section 5.4.1</a>之后，我们已经在  /users/new 地址处获得了一个页面，但是根据我们在 <a href="filling-in-the-layout#table-url_mapping">Table 5.1</a>计划的，我们想要一个  /signup 的uri 来作为注册页面地址。在开始我们的改动之前，和 <a href="filling-in-the-layout#sec-layout_links">Section 5.3</a>一样，我们首先要写一个测试，可以这样生成： </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ rails generate integration_test user_pages
+</code></pre></div>
+<p>然后如同我们在 static 页面测试中所做的一样，我们将会写上测试代码来对 <code>h1</code> 和  <code>title</code> 标签进行测试，如下：</p>
+
+<p>Listing 5.31. The initial spec for users, with a test for the signup
+page. \
+<code>spec/requests/user_pages_spec.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">require &#39;spec_helper&#39;
+
+describe &quot;User pages&quot; do
+
+  subject { page }
+
+  describe &quot;signup page&quot; do
+    before { visit signup_path }
+
+    it { should have_selector(&#39;h1&#39;,    text: &#39;Sign up&#39;) }
+    it { should have_selector(&#39;title&#39;, text: full_title(&#39;Sign up&#39;)) }
+  end
+end
+</code></pre></div>
+<p>我们可以使用 <code>rspec</code> 来进行测试：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/user_pages_spec.rb
+</code></pre></div>
+<p>还可以直接对目录下的所有文件进行测试：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/requests/
+</code></pre></div>
+<p>或许你也猜到了，你甚至可以这样运行所有的 specs 测试：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/
+</code></pre></div>
+<p>为了测试的完整，我们将来可能常常会使用这条命令进行测试。顺便提一句，有的人喜欢用 rake task 来进行完整的测试，像这样</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rake spec
+</code></pre></div>
+<p>甚至他们只需要键入 <code>rake</code> 就足够了，因为默认的rake行为就是运行测试套件。</p>
+
+<p>至今，我们的用户控制器已经有了一个 <code>new</code> 行为，为了让我们的测试通过，我们需要写出正确的路由设置和视图内容。我们将会依据 <a href="filling-in-the-layout#code-static_page_routes">Listing 5.21</a> 然后加入一行 <code>match ’/signup’</code> 。</p>
+
+<p>Listing 5.32. A route for the signup page. \
+<code>config/routes.rb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SampleApp::Application.routes.draw do
+  get &quot;users/new&quot;
+
+  root to: &#39;static_pages#home&#39;
+
+  match &#39;/signup&#39;,  to: &#39;users#new&#39;
+
+  match &#39;/help&#39;,    to: &#39;static_pages#help&#39;
+  match &#39;/about&#39;,   to: &#39;static_pages#about&#39;
+  match &#39;/contact&#39;, to: &#39;static_pages#contact&#39;
+  .
+  .
+  .
+end
+</code></pre></div>
+<p>注意到文件中已经存在了 <code>get &quot;users/new&quot;</code> ，它由控制器的 generate 命令自动添加。虽然 <code>’users/new’</code> 这样的地址现在已经可用，但是这并不符合我们的REST标准 (<a href="a-demo-app#table-demo_RESTful_users">Table 2.2</a>)，我们将会在 <a href="sign-up#sec-a_users_resource">Section 7.1.2</a>对其作出处理.</p>
+
+<p>为了让测试通过，我们所需要第一件事就是为视图文件添加一个 titile 和 “Sign up” 的头部标签：</p>
+
+<p>Listing 5.33. The initial (stub) signup page. \
+<code>app/views/users/new.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;% provide(:title, &#39;Sign up&#39;) %&gt;
+&lt;h1&gt;Sign up&lt;/h1&gt;
+&lt;p&gt;Find me in app/views/users/new.html.erb&lt;/p&gt;
+</code></pre></div>
+<p>现在 signup 的测试应该能够通过了，接下来的是给 Home 页面加入一个 button 。我们在路由文件中写入了  <code>match ’/signup’</code>，这将生成一个叫  <code>signup_path</code> 的路径helper，我们可以把它用上了：</p>
+
+<p>Listing 5.34. Linking the button to the Signup page. \
+<code>app/views/static_pages/home.html.erb</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;div class=&quot;center hero-unit&quot;&gt;
+  &lt;h1&gt;Welcome to the Sample App&lt;/h1&gt;
+
+  &lt;h2&gt;
+    This is the home page for the
+    &lt;a href=&quot;http://railstutorial.org/&quot;&gt;Ruby on Rails Tutorial&lt;/a&gt;
+    sample application.
+  &lt;/h2&gt;
+
+  &lt;%= link_to &quot;Sign up now!&quot;, signup_path, class: &quot;btn btn-large btn-primary&quot; %&gt;
+&lt;/div&gt;
+
+&lt;%= link_to image_tag(&quot;rails.png&quot;, alt: &quot;Rails&quot;), &#39;http://rubyonrails.org/&#39; %&gt;
+</code></pre></div>
+<p>至此，我们已经暂时完成了所有的链接和命名路由的设置，最终结果如图：</p>
+
+<p><img src="/images/figures/new_signup_page_bootstrap.png" alt="new\_signup\_page\_bootstrap"></p>
+
+<p>Figure 5.9: The new signup page at
+<a href="http://localhost:3000/signup">/signup</a>. <a href="http://railstutorial.org/images/figures/new_signup_page_bootstrap-full.png">(full
+size)</a></p>
+
+<p>此时应该能够通过所有的测试：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ bundle exec rspec spec/
+</code></pre></div>
+<h2><a href="filling-in-the-layout#sec-layout_conclusion">5.5 总结整理</a></h2>
+
+<p>在这一章中，我们对应用的布局和路由进行了修改。接下来，本书会渐渐地完善这一个简单的示例程序：用户可以在这样的程序中注册，登录，登出，发布微博，最后能够让用户互相关注。</p>
+
+<p>而现在，我们应该使用 Git 来把我们的成果合并到 master 分支上：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git add .
+$ git commit -m &quot;Finish layout and routes&quot;
+$ git checkout master
+$ git merge filling-in-layout
+</code></pre></div>
+<p>然后push到Github上</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git push
+</code></pre></div>
+<p>部署</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git push heroku
+</code></pre></div>
+<p>查看自己的成果</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ heroku open
+</code></pre></div>
+<p>如果出错了，可以如下查看日志</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ heroku logs
+</code></pre></div>
+<p>并根据 heroku 的日志来进行 debug.</p>
+
+					<div class="meta">
+						<p class="date-publish">
+							Published: 
+							<date class="date-pub" title="2013-08-28T00:00:00+08:00" datetime="2013-08-28T00:00:00+08:00" pubdate>
+							<span class="month"><abbr>August</abbr></span>
+							<span class="day">28</span>
+							<span class="year">2013</span>
+							</date>
+						</p>
+						<ul class="list-category list-linear">
+							<li class="list-head">category: </li>
+							
+							
+
+
+  
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags: </li>
+							
+							
+
+
+  
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="username" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/username" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+					
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/2013/08/28/chapter-4" title="View Chapter 4">&laquo; Chapter 4</a></li>
+							
+							
+							<li class="pipe"> | </li>
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/2013/08/28/chapter-6" title="View Chapter 6">Chapter 6 &raquo;</a></li>
+							
+						</ul>
+					</nav>
+					<p class="gotop">
+						<a href="#page">Back to Top</a>
+					</p>
+				</div>
+			</footer>
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+	<footer class="the-footer">
+		<div class="unit-foot">
+			<div class="unit-inner unit-foot-inner">
+				<div class="misc vcard">
+					<h4>about</h4>
+					<ul>
+						<li class="contact"><address><span class="author fn n">Name Lastname</span> - <span class="fn email">cool.zhikai@gmail.com</span></address></li>
+						<li class="github"><a href="http://github.com/tassandar.com/Tassandar/" rel="me">github.com/tassandar.com/Tassandar</a></li>
+						<li class="twitter"><a href="http://twitter.com/username/" rel="me">twitter.com/username</a></li>
+						<li class="rss"><a href="http://feeds.feedburner.com/">Subscribe to RSS Feed</a></li>
+					</ul>
+				</div><!-- misc -->
+				<p class="licence">
+					Theme: <a href="http://layouts-the.me">the_minimum</a> based on <a href="http://jekyllbootstrap.com/">Jekyll-bootstrap</a>.<br>
+					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
+				</p>
+			</div><!-- unit-foot-inner -->
+		</div><!-- unit-foot -->
+	</footer>
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/2013/08/28/chapter-5" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+</body>
+</html>
+
