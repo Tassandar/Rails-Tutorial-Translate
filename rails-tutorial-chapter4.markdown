@@ -742,8 +742,7 @@ Unless you already have a substantial programming background, there is no shortc
 
 它调用了` stylesheet_link_tag`  函数，传递了两个参数：一个是字符串，指定了样式表的路径，另一个是哈希，指定了媒体的链接类型。因为有 <%= %> 括号，它产生的结果将被转换至 ERB template.如果你看了浏览器上的代码的话，你会发现最后生成了这样的语句.
 
-    <link href="/assets/application.css" media="all" rel="stylesheet"
-type="text/css" />
+    <link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" />
 
 如果你手动地访问服务器上的样式表文件，你将会看到这是一个空文件，别着急，我们将会在第五章对他进行完善。
 
