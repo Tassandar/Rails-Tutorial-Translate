@@ -51,7 +51,18 @@
 
 			<div class="bd">
 				<div class="entry-content">
-					
+					<h1>第七章  登录</h1>
+
+<p>现在我们已经有了可用的用户模块，现在是时候添加大多数网站必备的功能了：让用户能够登录网站。在7.2小节，我们将用HTML<em>表格</em>将用户登录信息提交给我们的应用。然后，在7.4小节，我们会创建一个用户并将其属性保存在数据库中。用户登录后，用新建的用户信息生成用户主页非常重要，所以我们会创建一个显示用户信息的页面。这是实现用户REST架构的第一步（2.2.2小节）。和平常一样，我们会一边开发一边测试，用RSpec和Capybara简洁的完成集成测试，并扩展本章的主题。</p>
+
+<p>为了生成用户主页，我们需要数据库中的用户数据。这产生了鸡生蛋，蛋生鸡的问题：网站如何在没有可工作的登录页面时创建用户？幸运的是，这个问题已被解决。在6.3.5小节，我们用Rails控制台创建了一个用户记录。如果你跳过了那个小节，你最好在继续之前完成6.3.5小节。</p>
+
+<p>如果你跟随本教程使用版本控制，那么就像平常一样创建一个分支：</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git checkout master
+$ git checkout -b sign-up
+</code></pre></div>
+<h2>7.1 显示用户</h2>
+
 					<div class="meta">
 						<p class="date-publish">
 							Published: 
@@ -105,9 +116,13 @@
 					<nav class="pagination">
 						<ul>
 							
-							<li class="prev"><a class="internal" rel="prev"  href="/2013/08/28/chapter-5" title="View Chapter 5">&laquo; Chapter 5</a></li>
+							<li class="prev"><a class="internal" rel="prev"  href="/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-5" title="View 第五章 结构布局">&laquo; 第五章 结构布局</a></li>
 							
 							
+							<li class="pipe"> | </li>
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/29/chapter-7" title="View 第七章 登录">第七章 登录 &raquo;</a></li>
 							
 						</ul>
 					</nav>

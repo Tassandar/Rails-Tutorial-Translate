@@ -12,11 +12,11 @@ pygments: true
 title : Rails 中文入门教程
 tagline:   未完成
 author :
-  name : Name Lastname
+  name : Zhikai Wang
   email : cool.zhikai@gmail.com
-  github : tassandar.com/Tassandar
-  twitter : username
-  feedburner : feedname
+  github : Tassandar
+  #twitter : username
+  #feedburner : feedname
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 

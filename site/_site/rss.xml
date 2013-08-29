@@ -5,21 +5,51 @@
         <description>Rails 中文入门教程 - Name Lastname</description>
         <link>http://tutorial.railschina.org</link>
         <link>http://tutorial.railschina.org</link>
-        <lastBuildDate>2013-08-28T23:41:03+08:00</lastBuildDate>
-        <pubDate>2013-08-28T23:41:03+08:00</pubDate>
+        <lastBuildDate>2013-08-29T10:16:31+08:00</lastBuildDate>
+        <pubDate>2013-08-29T10:16:31+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
+                <title>第七章 登录</title>
+                <description>&lt;h1&gt;第七章  登录&lt;/h1&gt;
+
+&lt;p&gt;现在我们已经有了可用的用户模块，现在是时候添加大多数网站必备的功能了：让用户能够登录网站。在7.2小节，我们将用HTML&lt;em&gt;表格&lt;/em&gt;将用户登录信息提交给我们的应用。然后，在7.4小节，我们会创建一个用户并将其属性保存在数据库中。用户登录后，用新建的用户信息生成用户主页非常重要，所以我们会创建一个显示用户信息的页面。这是实现用户REST架构的第一步（2.2.2小节）。和平常一样，我们会一边开发一边测试，用RSpec和Capybara简洁的完成集成测试，并扩展本章的主题。&lt;/p&gt;
+
+&lt;p&gt;为了生成用户主页，我们需要数据库中的用户数据。这产生了鸡生蛋，蛋生鸡的问题：网站如何在没有可工作的登录页面时创建用户？幸运的是，这个问题已被解决。在6.3.5小节，我们用Rails控制台创建了一个用户记录。如果你跳过了那个小节，你最好在继续之前完成6.3.5小节。&lt;/p&gt;
+
+&lt;p&gt;如果你跟随本教程使用版本控制，那么就像平常一样创建一个分支：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ git checkout master
+$ git checkout -b sign-up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;7.1 显示用户&lt;/h2&gt;
+</description>
+                <link>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/29/chapter-7</link>
+                <guid>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/29/chapter-7</guid>
+                <pubDate>2013-08-29T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
                 <title>Chapter 6</title>
-                <description></description>
+                <description>&lt;h1&gt;第七章  登录&lt;/h1&gt;
+
+&lt;p&gt;现在我们已经有了可用的用户模块，现在是时候添加大多数网站必备的功能了：让用户能够登录网站。在7.2小节，我们将用HTML&lt;em&gt;表格&lt;/em&gt;将用户登录信息提交给我们的应用。然后，在7.4小节，我们会创建一个用户并将其属性保存在数据库中。用户登录后，用新建的用户信息生成用户主页非常重要，所以我们会创建一个显示用户信息的页面。这是实现用户REST架构的第一步（2.2.2小节）。和平常一样，我们会一边开发一边测试，用RSpec和Capybara简洁的完成集成测试，并扩展本章的主题。&lt;/p&gt;
+
+&lt;p&gt;为了生成用户主页，我们需要数据库中的用户数据。这产生了鸡生蛋，蛋生鸡的问题：网站如何在没有可工作的登录页面时创建用户？幸运的是，这个问题已被解决。在6.3.5小节，我们用Rails控制台创建了一个用户记录。如果你跳过了那个小节，你最好在继续之前完成6.3.5小节。&lt;/p&gt;
+
+&lt;p&gt;如果你跟随本教程使用版本控制，那么就像平常一样创建一个分支：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ git checkout master
+$ git checkout -b sign-up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;7.1 显示用户&lt;/h2&gt;
+</description>
                 <link>http://tutorial.railschina.org/2013/08/28/chapter-6</link>
                 <guid>http://tutorial.railschina.org/2013/08/28/chapter-6</guid>
                 <pubDate>2013-08-28T00:00:00+08:00</pubDate>
         </item>
 
         <item>
-                <title>Chapter 5</title>
+                <title>第五章 结构布局</title>
                 <description>&lt;h1&gt;&lt;a href=&quot;filling-in-the-layout#top&quot;&gt;第五章 布局&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;经过简单的第四章 Ruby 语言的学习之后,我们掌握了在程序中引入布局文件的技巧，但是目前这个布局文件还是空的。在这一章节，我们将要通过使用 &lt;em&gt;Bootstrap&lt;/em&gt; 框架来对自定义我们的网页布局。我们还要构建出网站中所需要元素和链接，而在这期间，我们将会学会 partial, routes , 和asset pipeline ,同时还会介绍 Sass。
@@ -1502,14 +1532,16 @@ $ git merge filling-in-layout
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;并根据 heroku 的日志来进行 debug.&lt;/p&gt;
 </description>
-                <link>http://tutorial.railschina.org/2013/08/28/chapter-5</link>
-                <guid>http://tutorial.railschina.org/2013/08/28/chapter-5</guid>
+                <link>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-5</link>
+                <guid>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-5</guid>
                 <pubDate>2013-08-28T00:00:00+08:00</pubDate>
         </item>
 
         <item>
-                <title>Chapter 4</title>
-                <description>&lt;h2&gt;第四章 Rails 中的 Ruby&lt;/h2&gt;
+                <title>第四章 Rails中的Ruby</title>
+                <description>&lt;p&gt;翻译 &lt;a href=&quot;http://ruby.railstutorial.org/chapters/a-demo-app#top&quot;&gt;ruby on rails Tutorial&lt;/a&gt;,原作者 &lt;a href=&quot;http://michaelhartl.com/&quot;&gt;Michael Hartl&lt;/a&gt; .&lt;/p&gt;
+
+&lt;h2&gt;第四章 Rails 中的 Ruby&lt;/h2&gt;
 
 &lt;p&gt;早在第三章的例子中，我们就已经介绍了一些 Rails 中用上的重要 Ruby 属性。Ruby 是一门博大精深的语言，庆幸的是，对于一个 Rails 开发者来说，你并不需要那么地精通。现在的做法或许和通常学习Ruby的方法有点相背，但是就我的建议来说：如果你的目标是写出一个完整的动态网站，那么你应该先学 Rails， 顺带学一学 Ruby，当你需要变成 Rails 专家的时候，你就需要更加深入地学习 Ruby了。而这本书将会为你打下良好的基础，如同我在 &lt;a href=&quot;http://ruby.railstutorial.org/chapters/beginning#sec-comments_for_various_readers&quot;&gt;章节1.1&lt;/a&gt; 当中所说，在完成了这部教程之后我建议能够认真地阅读一本纯粹的 Ruby 教程，例如 &lt;a href=&quot;http://www.amazon.com/gp/product/1430223634&quot;&gt;Beginning Ruby&lt;/a&gt;, &lt;a href=&quot;http://www.amazon.com/gp/product/1933988657&quot;&gt;The Well-Grounded Rubyist&lt;/a&gt;,或者 &lt;a href=&quot;http://www.amazon.com/gp/product/0672328844&quot;&gt;The Ruby Way&lt;/a&gt;.&lt;/p&gt;
 
@@ -2453,13 +2485,13 @@ user.formatted_email
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;$ git add .
 $ git commit -m &amp;quot;Add a full_title helper&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-                <link>http://tutorial.railschina.org/2013/08/28/chapter-4</link>
-                <guid>http://tutorial.railschina.org/2013/08/28/chapter-4</guid>
+                <link>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-4</link>
+                <guid>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-4</guid>
                 <pubDate>2013-08-28T00:00:00+08:00</pubDate>
         </item>
 
         <item>
-                <title>Chapter 3</title>
+                <title>第三章 一个静态页面</title>
                 <description>&lt;p&gt;翻译 &lt;a href=&quot;http://ruby.railstutorial.org/chapters/a-demo-app#top&quot;&gt;ruby on rails Tutorial&lt;/a&gt;,原作者 &lt;a href=&quot;http://michaelhartl.com/&quot;&gt;Michael Hartl&lt;/a&gt; .&lt;/p&gt;
 
 &lt;h2&gt;第三章 Mostly static pages&lt;/h2&gt;
@@ -2860,16 +2892,16 @@ Finished in 0.07253 seconds
 
 &lt;p&gt;在前面的例子里你可能已经注意到了，用这样的套件运行一次测试非常的慢（the overhead involved in running a test suite can be considerable.不知道是不是这意思）。这是因为每次运行RSpec来进行一次测试都会 Reload 一次 Rails 环境。Spork test server 就是针对这个问题产生的。&lt;/p&gt;
 </description>
-                <link>http://tutorial.railschina.org/tutorial/2013/08/28/chapter-3</link>
-                <guid>http://tutorial.railschina.org/tutorial/2013/08/28/chapter-3</guid>
+                <link>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-3</link>
+                <guid>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-3</guid>
                 <pubDate>2013-08-28T00:00:00+08:00</pubDate>
         </item>
 
         <item>
-                <title>第二章</title>
-                <description>&lt;p&gt;翻译 &lt;a href=&quot;http://ruby.railstutorial.org/chapters/a-demo-app#top&quot;&gt;ruby on rails Tutorial&lt;/a&gt;,原作者 &lt;a href=&quot;http://michaelhartl.com/&quot;&gt;Michael Hartl&lt;/a&gt; .&lt;/p&gt;
+                <title>第二章 测试应用</title>
+                <description>&lt;h3&gt;第二章&lt;/h3&gt;
 
-&lt;h3&gt;第二章&lt;/h3&gt;
+&lt;p&gt;翻译 &lt;a href=&quot;http://ruby.railstutorial.org/chapters/a-demo-app#top&quot;&gt;ruby on rails Tutorial&lt;/a&gt;,原作者 &lt;a href=&quot;http://michaelhartl.com/&quot;&gt;Michael Hartl&lt;/a&gt; .&lt;/p&gt;
 
 &lt;h2&gt;示例程序&lt;/h2&gt;
 
@@ -3209,7 +3241,7 @@ REST原始的很抽象的，具体到Rails下的REST应用就是指大部分程�
 
 &lt;p&gt;一旦@users被定义（赋值）之后，控制器就可以条用视图（View），如代码2.6。以“@”符号开始的变量成为类变量，可以自动的在视图中调用，在这里，index.html.erb（代码2.6）中的游标将会遍历@users数组变量然后为每一项输出一串HTML代码。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;代码2.6. 用户index的视图(现在你不明白没关系。)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;** 代码2.6. 用户index的视图(现在你不明白没关系。) **&lt;/p&gt;
 
 &lt;p&gt;``` ruby app/views/users/index.html.erb
     &lt;h1&gt;Listing users&lt;/h1&gt;&lt;/p&gt;
@@ -3540,18 +3572,20 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
 &lt;li&gt;&lt;p&gt;No real understanding    还没弄明白&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-                <link>http://tutorial.railschina.org/2013/08/28/chapter-2</link>
-                <guid>http://tutorial.railschina.org/2013/08/28/chapter-2</guid>
+                <link>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-2</link>
+                <guid>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-2</guid>
                 <pubDate>2013-08-28T00:00:00+08:00</pubDate>
         </item>
 
         <item>
-                <title>第一章</title>
+                <title>第一章 从零到部署自己的网站</title>
                 <description>&lt;p&gt;开始翻译 &lt;a href=&quot;http://ruby.railstutorial.org/&quot;&gt;Ruby on Rails Tutorial&lt;/a&gt; 转载请注明出处与原作者 &lt;a href=&quot;http://ruby.railstutorial.org/&quot;&gt;Michael Hartl&lt;/a&gt; &lt;/p&gt;
 
 &lt;p&gt;欢迎来到跟我实例学 &lt;a href=&quot;http://ruby.railstutorial.org/&quot;&gt;Ruby on Rails&lt;/a&gt;教程. 这本书的目的是要成为“我如何开始做Ruby on Rails ？”的最佳答案。当你完成这个ror教程之后你将学会与开发部署你自己的网页.&lt;/p&gt;
 
 &lt;p&gt;你可以在这里获取许多相关的资源例如书，博客，视频，另外，自从ruby on rails 教程使用了rails3，你也将会在这里学到全套的最新最强大的rails 3版本。&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;ruby on rails教程与许多别的rails教程书一样，通过构建许多小的简易程序来学习web开发。
 与&lt;a href=&quot;http://sivers.org/&quot;&gt;Derek Sivers&lt;/a&gt;在前面提到的一样。这本书的构架会和一篇平铺的小故事一样，期望读者们能从头一篇篇的看到尾。如果你习惯跳跃性的阅读技术书记，你可能需要用一些不同的方法来读这篇教程，下面的这个引导段落可能对你有所帮助。你可以把&lt;strong&gt;ruby on rails 教程&lt;/strong&gt;当作一个电子游戏，把你自己当成游戏的主角，然后在这篇教材中快乐的打怪升级。。。（这些练习都是小boss … ^_^ ）&lt;/p&gt;
@@ -3562,8 +3596,7 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
 
 &lt;p&gt;在第三章，我们将会创建一个 sample application (名叫sample_app),这次的代码将会全部用scratch的方法生成。我们将会开发那个例程通过使用 测试驱动开发（TDD &lt;strong&gt;test-driven-development&lt;/strong&gt;）从第三章开始我们将会创建一个静态的页面，然后我们再加入一些动态的内容。我们将会在第四章走开一会，来关注一下rails底下Ruby语言特性。然后在第五章到第十章我们将会通过使用网页布局，用户数据库，全方位的注册和认证系统来完整的建立这个实例程序。最后在第十一章和第十二章我们将会加入微博和社会化特性来完成这个实例站点。&lt;/p&gt;
 
-&lt;p&gt;最后这个实例程序将会与一个实实在在的流行的微博社交网站(twitter)十分相似，巧合的事，twitter也是用rails开发的。虽然我们一直在关注的是这个实实在在的示例站点，但是关键的是我们通过ruby on rails 教程将会学到许多通用的法则，这将会让你不管开发什么网站都一个扎实的基础。
-&amp;lt;!--more--&amp;gt;&lt;/p&gt;
+&lt;p&gt;最后这个实例程序将会与一个实实在在的流行的微博社交网站(twitter)十分相似，巧合的事，twitter也是用rails开发的。虽然我们一直在关注的是这个实实在在的示例站点，但是关键的是我们通过ruby on rails 教程将会学到许多通用的法则，这将会让你不管开发什么网站都一个扎实的基础。&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;h4&gt;BOX1.1 scaffolding，一个快速，简洁诱人的脚手架&lt;/h4&gt;
@@ -4229,16 +4262,8 @@ gem &amp;#39;sqlite3&amp;#39;, &amp;#39;1.3.3&amp;#39;, :group =&amp;gt; :develo
 
 &lt;p&gt;每一句话都可以证明了你实实在在的开始了你的rails学习，下一章我们会学到更深入的东西，LET‘S GET TO IT～&lt;/p&gt;
 </description>
-                <link>http://tutorial.railschina.org/2013/08/28/chapter-1</link>
-                <guid>http://tutorial.railschina.org/2013/08/28/chapter-1</guid>
-                <pubDate>2013-08-28T00:00:00+08:00</pubDate>
-        </item>
-
-        <item>
-                <title>Chapter</title>
-                <description></description>
-                <link>http://tutorial.railschina.org/2013/08/28/chapter</link>
-                <guid>http://tutorial.railschina.org/2013/08/28/chapter</guid>
+                <link>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-1</link>
+                <guid>http://tutorial.railschina.org/rails%20%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/2013/08/28/chapter-1</guid>
                 <pubDate>2013-08-28T00:00:00+08:00</pubDate>
         </item>
 
