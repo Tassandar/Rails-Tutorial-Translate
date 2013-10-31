@@ -557,7 +557,7 @@ GitHub 有收费的项目，但是开源保管代码是免费的，你可以免�
 ``` bash
 $ git remote add origin git@github.com:<username>/first_app.git
 $ git push origin master
-``` bash
+``` 
 
 这个命令告诉了 Git 你想要添加 GitHub 作为你的 master （主分支）的 origin （起源）然后推送到GitHub上，当然你要在这里把 给替换成你自己的用户名。我这里用了 railstutorial 作为我的用户名。
 
