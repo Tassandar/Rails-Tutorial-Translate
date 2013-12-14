@@ -1,5 +1,4 @@
 
-
 ###第二章
 
 翻译 [ruby on rails Tutorial](http://ruby.railstutorial.org/chapters/a-demo-app#top),原作者 [Michael Hartl](http://michaelhartl.com/) .
@@ -230,7 +229,8 @@ rake db:migrate命令可能是最经常使用到的，但是这只是其中之�
 *Listing 2.2. Rails的映射Users 资源的路由.*
 
 
-``` ruby  config/routes.rb
+``` ruby  
+   config/routes.rb
 
    DemoApp::Application.routes.draw do
       resources :users
@@ -249,7 +249,9 @@ rake db:migrate命令可能是最经常使用到的，但是这只是其中之�
 
 
 
-``` ruby app/controllers/users_controller.rb
+``` ruby 
+    app/controllers/users_controller.rb
+    
     class UsersController < ApplicationController
 
       def index
@@ -368,7 +370,9 @@ end
 
 **代码2.5. 演示程序的user模型**
 
-``` ruby app/models/user.rb
+``` ruby 
+    app/models/user.rb
+    
     class User < ActiveRecord::Base
     end
 ```
@@ -378,7 +382,9 @@ end
 **代码2.6. 用户index的视图(现在你不明白没关系。)**
 
 
-``` ruby app/views/users/index.html.erb
+``` ruby 
+    app/views/users/index.html.erb
+    
     <h1>Listing users</h1>
 
     <table>
@@ -470,7 +476,9 @@ end
 
 *代码2.7 新增了Microposts资源的Rails路由*
 
-``` ruby config/routes.rb
+``` ruby 
+    config/routes.rb
+    
     DemoApp::Application.routes.draw do
       resources :microposts
       resources :users
@@ -491,7 +499,9 @@ Microposts控制器示意代码如代码2.8所示。和代码2.3相比，除了�
 
 *代码2.8，Microposts的示意代码*
 
-``` ruby app/controllers/microposts_controller.rb
+``` ruby 
+    app/controllers/microposts_controller.rb
+    
     class MicropostsController < ApplicationController
 
       def index
@@ -556,7 +566,9 @@ Microposts控制器示意代码如代码2.8所示。和代码2.3相比，除了�
 任何敢叫微博的帖子要对得起他的称呼就要意味着要限制他的长度。要实现这个约束条件在Rails中是非常容易——使用模型验证（validations of rails）。我们可以使用length这个验证条件来限制微博的最大长度为140个字符（学习 Twitter）。你需要用你的IDE或者文本编辑器打开app/models/micropost.rb填入如代码2.9所示的代码（这个验证的使用是rails3的特性，如果你之前有使用Rails2.3.X版本，你可以对比一下“validates_length_of”的用法）。
 代码2.9 约束微博最大字符长度为140。
 
-``` ruby app/models/micropost.rb
+``` ruby 
+    app/models/micropost.rb
+    
     class Micropost < ActiveRecord::Base
       validates :content, :length => { :maximum => 140 }
     end
@@ -574,7 +586,9 @@ Microposts控制器示意代码如代码2.8所示。和代码2.3相比，除了�
 **代码 2.10. 一个user可以有多条微博信息microposts**
 
 
-``` ruby app/models/user.rb
+``` ruby 
+    app/models/user.rb
+    
     class User < ActiveRecord::Base
       has_many :microposts
     end
@@ -582,8 +596,9 @@ Microposts控制器示意代码如代码2.8所示。和代码2.3相比，除了�
 
 **代码 2.11 每一条微博信息都是属于某一个用户的**
 
-``` 
-  ruby app/models/micropost.rb
+``` ruby 
+    app/models/micropost.rb
+    
     class Micropost < ActiveRecord::Base
       belongs_to :user
 
@@ -623,7 +638,9 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
 
 **代码 2.12 继承的User类**
 
-``` ruby app/models/user.rb
+``` ruby 
+    app/models/user.rb
+    
     class User < ActiveRecord::Base
       .
       .
@@ -633,7 +650,9 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
 
 **代码 2.13 继承的Micropost类**
 
-``` ruby app/models/micropost.rb
+``` ruby 
+    app/models/micropost.rb
+    
     class Micropost < ActiveRecord::Base
       .
       .
@@ -650,7 +669,9 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
 
 **代码 2.14. UsersController继承自ApplicationController.**
 
-``` ruby app/controllers/users_controller.rb
+``` ruby 
+    app/controllers/users_controller.rb
+    
     class UsersController < ApplicationController
       .
       .
@@ -661,7 +682,9 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
 
 **代码 2.15. MicropostsController 继承自ApplicationController.**
 
-``` ruby app/controllers/microposts_controller.rb
+``` ruby 
+    app/controllers/microposts_controller.rb
+    
     class MicropostsController < ApplicationController
       .
       .
@@ -669,7 +692,9 @@ ActiveRecord：：Base类是ActiveRecord提供的模型的基类。图2.16总结
     end
 ```
 
-```ruby app/controllers/application_controller.rb
+``` ruby 
+    app/controllers/application_controller.rb
+    
     class ApplicationController < ActionController::Base
       .
       .
