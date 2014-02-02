@@ -94,7 +94,7 @@ Windows下的用户你可能会出现类似的的命令和命令提示符:
 
 	$ sudo ruby setup.rb
 
-大部分的Unix/Linux/OS X系统需要加上一个<code>sudo</sudo> 命令，除非你使用了Ruby的版本管理软件（在1.2.2.3介绍）。如果这样的话你将可以这样运行：
+大部分的Unix/Linux/OS X系统需要加上一个<code>sudo</code> 命令，除非你使用了Ruby的版本管理软件（在1.2.2.3介绍）。如果这样的话你将可以这样运行：
 
 	$ ruby setup.rb
 
