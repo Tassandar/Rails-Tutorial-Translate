@@ -70,7 +70,7 @@ rails 很多时候会有一些看起来如同“魔法”一般的特性（例�
 * [Rails Guides](http://guides.rubyonrails.org/)
 * [Rails blogs](http://www.google.com/search?q=ruby+on+rails+blogs)
 
-####1.1.2 “Scaling”(谁知道怎么翻译？)的rails
+####1.1.2 用rails构建大工程
 
 在开始我们的教程之前我想要花一点时间来纠正一个多年来关于rails框架的最常见的问题：rails能不能去“架构“一个大型网站。我觉得关于这个问题你们有一些误区：[你架构的是一个网站，不是一个框架](http://idleprocess.wordpress.com/2009/11/24/presentation-summary-high-performance-at-massive-scale-lessons-learned-at-facebook/).而rails再牛逼也就是一个框架而已。所以你们真正想问的恐怕应该是：“大流量的网站能够用否rails框架来搭建？“。而如今，我想这个问题应该能够被很确定的回答：世界上某些流量最大的网站就是用rails搭建的！实施上做一个架构需要的东西远远不只是rails但是如果你确定你能够作出一个像Hulu,Yellow Pages那样的大型网站的话，我想rails是不会阻止你去颠覆世界的～！
 
@@ -94,7 +94,7 @@ Windows下的用户你可能会出现类似的的命令和命令提示符:
 
 	$ sudo ruby setup.rb
 
-大部分的Unix/Linux/OS X系统需要加上一个<code>sudo</sudo> 命令，除非你使用了Ruby的版本管理软件（在1.2.2.3介绍）。如果这样的话你将可以这样运行：
+大部分的Unix/Linux/OS X系统需要加上一个<code>sudo</code> 命令，除非你使用了Ruby的版本管理软件（在1.2.2.3介绍）。如果这样的话你将可以这样运行：
 
 	$ ruby setup.rb
 
